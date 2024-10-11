@@ -50,8 +50,8 @@ author: Requirements Documents Template
 Requirements
 The requirements should be detailed in the requirements document you created in Assignment
 1 and in your team’s project plan but should include:
-● Which sources of food at BU will be eligible for the program
-● Which constituents at BU will be eligible to access the food
-● Notification of availability of food
-● Management of food availability
-● Other requirements your team feels would be good
+* Which sources of food at BU will be eligible for the program
+* Which constituents at BU will be eligible to access the food
+* Notification of availability of food
+* Management of food availability
+* Other requirements your team feels would be good

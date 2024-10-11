@@ -45,3 +45,13 @@ author: Requirements Documents Template
 ## 7. Risks
 
 * __Risks:__ Identify one or two major risks and mitigation strategies.
+
+## 8. Additional Requirements
+Requirements
+The requirements should be detailed in the requirements document you created in Assignment
+1 and in your team’s project plan but should include:
+● Which sources of food at BU will be eligible for the program
+● Which constituents at BU will be eligible to access the food
+● Notification of availability of food
+● Management of food availability
+● Other requirements your team feels would be good

@@ -84,7 +84,8 @@ This is an example that your team should fill in with the specifics about your p
 | Name         | Roles                                                       |
 |--------------|-------------------------------------------------------------|
 | Shangmin     | Developer,                                                  |
-| Name         | Designer, Frontend, Assets                                  |
+| Name         | Designer, Assets     		                             |
+| Name	       | Tester							     |
 | Everyone     | Team							     |
 
 ---

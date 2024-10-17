@@ -83,7 +83,98 @@ This is an example that your team should fill in with the specifics about your p
 
 | Name         | Roles                                                       |
 |--------------|-------------------------------------------------------------|
-| Shangmin     | Developer or Develops Module n                              |
+| Shangmin     | Developer,                                                  |
 | Name         | Designer, Frontend, Assets                                  |
+| Everyone     | Team							     |
 
 ---
+
+## Part 3: Tasks
+
+### High-Level Project Plan Details
+Expand this and add your details.
+
+| Phase      | Deliverables                             | Tasks                                      | Timeline                                      | Resources               |
+|------------|------------------------------------------|--------------------------------------------|-----------------------------------------------|-------------------------|
+| Planning   | - Requirements & Scope Document          | - Define project goals, requirements, and stakeholders | Sprint 1			     | Team                    |
+|            | - Work Breakdown Structure (WBS)         | - Create WBS                               | Sprint 1			  	  	     | Team                    |
+| Design     | - System Design Document                 | - Conduct requirements gathering           | Sprint 2   				     | Team		       |
+|            | - User Interface Prototypes              | - Create design specifications             | Sprint 2			  		     | Team                    |
+|            |                                          | - Develop prototypes                       | Sprint 3 - 5		    		     | Team                    |
+
+### Further Details on Project Plan using an Agile Development Methodology
+
+| Phase        | Deliverables                        | Tasks                                      | Timeline                                      | Resources               |
+|--------------|-------------------------------------|--------------------------------------------|-----------------------------------------------|-------------------------|
+| Development  | - Code Modules                      | - Write code                               | Sprint X or if multiple sprints in n days     | Developers, Testers     |
+|              | - Unit Tests of Each Module         | - Conduct unit testing                     | Sprint X or if multiple sprints in n days     |                         |
+|              |                                     | - Integrate modules                        | Sprint X or if multiple sprints in n days     |                         |
+| Testing      | - Test Cases                        | - Develop test cases                       | Sprint X or if multiple sprints in n days     | Testers                 |
+|              | - Test Reports                      | - Execute testing                          | Sprint X or if multiple sprints in n days     |                         |
+|              | - Fixed Testing Problems            | - Analyze results and remediate problems   | Sprint X or if multiple sprints in n days     |                         |
+| Deployment   | - Completed Web Application         | - Prepare deployment environment           | Sprint X or if multiple sprints in n days     | System Administrators   |
+|              | - Deployment Plan                   | - Deploy software                          | Sprint X or if multiple sprints in n days     |                         |
+|              | - User Manual, System Design, and Other Documentation | - Create documentation | Sprint X or if multiple sprints in n days |                         |
+
+---
+
+### Tasks Assigned to Backlog
+Create this specific to your project plan.
+
+| ID  | Task                       | Description                                               | Sprint   | Status        |
+|-----|----------------------------|-----------------------------------------------------------|----------|---------------|
+| 1   | Create User Registration    | Design and implement a form for new users to sign up.      | 1        | Not Started   |
+| 2   | Implement Login Functionality | Develop a login system for existing users.                | 2        | Not Started   |
+| 3   | Integrate Food Registry     | Connect the platform to a payment processor.               | 2        | Not Started   |
+| 4   | Design Dashboard Layout     | Create a visually appealing dashboard for users to view their data. | 2 | Not Started   |
+| 5   | Develop Email Notifications | Set up email notifications for various events (e.g., new orders, password resets). | 3 | Not Started |
+| 6   | Test User Interface         | Conduct usability testing on the user interface.           | 4        | Not Started   |
+| 7   | Optimize Database Queries   | Improve the performance of database queries.               | 4        | Not Started   |
+| 8   | Add Social Media Integration | Allow users to sign up or log in using social media accounts. | 5      | Not Started   |
+
+---
+
+## Part 4: Schedule
+
+### Tasks in Backlog Assigned to Sprints
+
+You should include in the backlog the planned Sprint(s) to do each task. Or this could be in a separate schedule.
+
+### Sprint Plan
+
+By following a structured sprint plan, teams can improve their productivity, reduce risk, and deliver higher-quality software. For every sprint, lay out the following in a short document:
+
+**Sprint Goals (example):**
+* Complete user registration and login.
+* Create a basic user dashboard.
+* Implement email notifications for password resets.
+
+**Sprint Tasks from Backlog:**
+List the tasks from the backlog to be implemented and by WHOM. Add columns as needed to help you manage this. Make sure to do this as a team and have each team member pick up and agree to their tasks.
+
+### Additional Schedule Considerations:
+1. **Sprint Length:** For the Spark!Bytes project, we use 1-week sprints. Industry-typical sprints can last from 1-4 weeks.
+2. **Velocity:** The amount of work the team can consistently deliver in a sprint.
+3. **Status Column:** Often included in what is called a Kanban Board, this is representative of the workflow, with statuses for "To Do," "In Progress," "Done," and others as needed.
+
+---
+
+## Part 5: Communications Plan
+
+As a team, negotiate and agree on how you will communicate with each other.
+
+### Regular Stand-ups:
+
+Team members meet at a schedule you define to discuss their progress, blockers, and plans for the day. This helps identify issues early on so you can address them before they become too large. Often, there are daily standups, but since your project team is not full-time, you likely only want to do one to three per sprint.
+
+### Sprint Planning & Retrospective:
+
+At the end of the sprint, the team will review the completed work and gather feedback from team members and stakeholders as needed. The team will reflect on the sprint, identifying what went well and what could be improved. This is a really important step that helps improve team communication and dynamics. In this same meeting, the team will refine and adjust the plan for remaining sprints to address any issues and manage the project to on-time completion.
+
+| Purpose          | Location       | Address       |
+|------------------|----------------|---------------|
+| Weekly Meeting   | CAS Building   | B20 Thursday  |
+| Standups         | Messages       | CS391 Group    |
+
+---
+

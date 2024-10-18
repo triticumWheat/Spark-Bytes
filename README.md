@@ -83,9 +83,9 @@ This is an example that your team should fill in with the specifics about your p
 
 | Name         | Roles                                                       |
 |--------------|-------------------------------------------------------------|
-| Shangmin     | Developer,                                                  |
-| Name         | Designer, Assets     		                             |
-| Name	       | Tester							     |
+| Shangmin, Shaozhe     | Developer,                                                 |
+| Zander, Christian     | Designer, Assets     		                             |
+| Mingyuan     | Tester							     |
 | Everyone     | Team							     |
 
 ---
@@ -97,25 +97,25 @@ Expand this and add your details.
 
 | Phase      | Deliverables                             | Tasks                                      | Timeline                                      | Resources               |
 |------------|------------------------------------------|--------------------------------------------|-----------------------------------------------|-------------------------|
-| Planning   | - Requirements & Scope Document          | - Define project goals, requirements, and stakeholders | Sprint 1			     | Team                    |
-|            | - Work Breakdown Structure (WBS)         | - Create WBS                               | Sprint 1			  	  	     | Team                    |
-| Design     | - System Design Document                 | - Conduct requirements gathering           | Sprint 2   				     | Team		       |
-|            | - User Interface Prototypes              | - Create design specifications             | Sprint 2			  		     | Team                    |
-|            |                                          | - Develop prototypes                       | Sprint 3 - 5		    		     | Team                    |
+| Planning   | - Requirements & Scope Document          | - Define project goals, requirements, and stakeholders | Sprint 1 (Week 1)		     | Team                    |
+|            | - Work Breakdown Structure (WBS)         | - Create WBS                               | Sprint 1	(Week 1)	  	  	     | Team                    |
+| Design     | - System Design Document                 | - Conduct requirements gathering           | Sprint 2 (Week 2 - 3)			     | Team		       |
+|            | - User Interface Prototypes              | - Create design specifications             | Sprint 2	(Week 2 - 3)	  		     | Team                    |
+|            |                                          | - Develop prototypes                       | Sprint 3 - 5 (Week 4 - 6)    		     | Designers               |
 
 ### Further Details on Project Plan using an Agile Development Methodology
 
 | Phase        | Deliverables                        | Tasks                                      | Timeline                                      | Resources               |
 |--------------|-------------------------------------|--------------------------------------------|-----------------------------------------------|-------------------------|
-| Development  | - Code Modules                      | - Write code                               | Sprint X or if multiple sprints in n days     | Developers, Testers     |
-|              | - Unit Tests of Each Module         | - Conduct unit testing                     | Sprint X or if multiple sprints in n days     |                         |
-|              |                                     | - Integrate modules                        | Sprint X or if multiple sprints in n days     |                         |
-| Testing      | - Test Cases                        | - Develop test cases                       | Sprint X or if multiple sprints in n days     | Testers                 |
-|              | - Test Reports                      | - Execute testing                          | Sprint X or if multiple sprints in n days     |                         |
-|              | - Fixed Testing Problems            | - Analyze results and remediate problems   | Sprint X or if multiple sprints in n days     |                         |
-| Deployment   | - Completed Web Application         | - Prepare deployment environment           | Sprint X or if multiple sprints in n days     | System Administrators   |
-|              | - Deployment Plan                   | - Deploy software                          | Sprint X or if multiple sprints in n days     |                         |
-|              | - User Manual, System Design, and Other Documentation | - Create documentation | Sprint X or if multiple sprints in n days |                         |
+| Development  | - Code Modules                      | - Write code                               | Sprint 3 - 6 (Week 4 - 7)		          | Developers, Testers     |
+|              | - Unit Tests of Each Module         | - Conduct unit testing                     | Sprint 4 - 6 (Week 5 - 7)		          |                         |
+|              |                                     | - Integrate modules                        | Sprint 6 (Week 7)			          |                         |
+| Testing      | - Test Cases                        | - Develop test cases                       | Sprint 7 (Week 8)		         	  | Testers                 |
+|              | - Test Reports                      | - Execute testing                          | Sprint 7 (Week 8 - 9)		          |                         |
+|              | - Fixed Testing Problems            | - Analyze results and remediate problems   | Sprint 8 (Week 9)			          |                         |
+| Deployment   | - Completed Web Application         | - Prepare deployment environment           | Sprint 10 (Week 10)			          | System Administrators   |
+|              | - Deployment Plan                   | - Deploy software                          | Sprint 10 (Week 10)			          |                         |
+|              | - User Manual, System Design, and Other Documentation | - Create documentation | Sprint 10 (Week 10)				  |                         |
 
 ---
 
@@ -124,14 +124,14 @@ Create this specific to your project plan.
 
 | ID  | Task                       | Description                                               | Sprint   | Status        |
 |-----|----------------------------|-----------------------------------------------------------|----------|---------------|
-| 1   | Create User Registration    | Design and implement a form for new users to sign up.      | 1        | Not Started   |
-| 2   | Implement Login Functionality | Develop a login system for existing users.                | 2        | Not Started   |
-| 3   | Integrate Food Registry     | Connect the platform to a payment processor.               | 2        | Not Started   |
-| 4   | Design Dashboard Layout     | Create a visually appealing dashboard for users to view their data. | 2 | Not Started   |
-| 5   | Develop Email Notifications | Set up email notifications for various events (e.g., new orders, password resets). | 3 | Not Started |
-| 6   | Test User Interface         | Conduct usability testing on the user interface.           | 4        | Not Started   |
-| 7   | Optimize Database Queries   | Improve the performance of database queries.               | 4        | Not Started   |
-| 8   | Add Social Media Integration | Allow users to sign up or log in using social media accounts. | 5      | Not Started   |
+| 1   | Create User Registration    | Design and implement a form for new users to sign up.      | 2        | Not Started   |
+| 2   | Implement Login Functionality | Develop a login system for existing users.                | 3        | Not Started   |
+| 3   | Integrate Food Registry     | Connect the platform to a payment processor.               | 4        | Not Started   |
+| 4   | Design Dashboard Layout     | Create a visually appealing dashboard for users to view their data. | 4 | Not Started   |
+| 5   | Develop Email Notifications | Set up email notifications for various events (e.g., new orders, password resets). | 5 | Not Started |
+| 6   | Test User Interface         | Conduct usability testing on the user interface.           | 6        | Not Started   |
+| 7   | Optimize Database Queries   | Improve the performance of database queries.               | 7        | Not Started   |
+| 8   | Add Social Media Integration | Allow users to sign up or log in using social media accounts. | 8      | Not Started   |
 
 ---
 

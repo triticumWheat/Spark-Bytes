@@ -12,8 +12,8 @@
 
 ### 2. Scope of Work
 
-* __Problem/Opportunity:__ High-level description of the problem or opportunity the software addresses.
-* __Use Cases:__ One or two simple user stories for critical features (e.g., "As a user, I want to [do X] so I can [achieve Y]").
+* __Problem/Opportunity:__ Leftover food from on-campus events is a problem for event organizers, resulting in unnecessary waste that could otherwise be used to feed students. Spark Bytes offers a solution by helping event organizers feed hungry students by post event details, such as the type of food available, how much is left, and how long it will be accessible for. Spark Bytes is an opportunity to improve campus suitability, waste, and most importantly, it helps feed hungry stomachs!
+* __Use Cases:__ As a student, I want to find leftover food from events so that I can have a free meal. As an event organizer, I want to post leftover food from my event so that it doesn’t go to waste.
 
 ### 3. Functional Requirements
 

@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, Layout, Menu, List, Typography } from 'antd';
+import axios from 'axios';
 import './App.css';
 
 const { Header, Content, Footer } = Layout;
@@ -8,9 +9,17 @@ const { Title, Paragraph } = Typography;
 function App() {
   const [events, setEvents] = useState([]);
 
+  useEffect(() => {
+    // Fetch events from the server
+    axios.get('http://localhost:5001/events')
+      .then((response) => setEvents(response.data))
+      .catch((error) => console.error('Error fetching events:', error));
+  }, []);
+
   const createEvent = () => {
-    const newEvent = `Event ${events.length + 1}`;
-    setEvents([...events, newEvent]);
+    axios.post('http://localhost:5001/events', { name: `Event ${events.length + 1}` })
+      .then((response) => setEvents([...events, response.data]))
+      .catch((error) => console.error('Error creating event:', error));
   };
 
   return (
@@ -38,8 +47,8 @@ function App() {
             <List
               bordered
               dataSource={events}
-              renderItem={(item, index) => (
-                <List.Item key={index}>{item}</List.Item>
+              renderItem={(item) => (
+                <List.Item key={item._id}>{item.name}</List.Item>
               )}
             />
           </section>

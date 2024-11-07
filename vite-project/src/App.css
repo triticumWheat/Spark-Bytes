@@ -1,42 +1,40 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* Header customization */
+.layout .ant-layout-header {
+  display: flex;
+  align-items: center;
+  background-color: #213547; /* Darker color for better contrast */
+  padding: 0 2rem;
 }
 
 .logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+  color: #fff;
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-right: 2rem;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Menu customization */
+.ant-menu {
+  background-color: transparent;
+  border-bottom: none;
+  flex-grow: 1;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.ant-menu-item {
+  color: #ffffff;
 }
 
-.card {
-  padding: 2em;
+.ant-menu-item a {
+  color: #ffffff;
+  transition: color 0.3s;
 }
 
-.read-the-docs {
-  color: #888;
+.ant-menu-item:hover,
+.ant-menu-item-active,
+.ant-menu-item-selected {
+  color: #646cff;
+}
+
+.ant-menu-horizontal > .ant-menu-item::after {
+  border-bottom: 2px solid #646cff; /* Highlighted underline */
 }

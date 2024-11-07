@@ -8,7 +8,7 @@
 * __Date:__ Oct 17, 2024
 * __Author:__ Shangmin Chen, Shaozhe Zhang, Mingyuan Sun, Christian Kraus, Zander Reid
 * __Purpose:__ Spark Bytes is a web application designed for Boston University students and faculty to post events that offer free food or snacks. The goal is to minimize food waste by making surplus food from events more accessible to the BU community. This initiative not only helps students find free food but also promotes sustainability by reducing the waste generated from over-purchasing food for campus events.
-* __Stakeholders:__ BU Students, BU Event organizers.
+* __Stakeholders:__ BU Students, BU Event Organizers, BU Sustainability Office.
 
 ### 2. Scope of Work
 
@@ -21,11 +21,19 @@
   * **Login Authentication:**  
     Restricts access to BU students and faculty through BU Kerberos login to ensure only authorized users can claim food.
   
-  * **One-Time Claim System:**  
+  * **One-Time Claim System (Optional):**  
     Implements a boolean flag initialized as True, allowing each student ID to claim food once per event. After claiming, the flag is set to False to prevent multiple claims.
   
   * **Event Posting Form:**  
-    Allows faculty and students to post events with details on leftover food, including time, location, and type of food.
+    Allows faculty and students to post events with details on leftover food, including time, location, type of food, and quantity estimate.
+    Fields include:
+             * Event Title
+             * Description
+             * Food Type
+             * Quantity Estimate
+             * Location (with map integration)
+             * Time Available (start and end times)
+             * Optional Contact Information
   
   * **Event Browser:**  
     Enables users to browse through events offering leftover food or upcoming events that will have food available.
@@ -45,10 +53,13 @@
   
   * **Map Integration:**  
     Uses the Google Maps API to display event locations based on the user’s current location.
+    Shows user's current location for proximity awareness.
+    Provides directions to event locations.
 
   * **Security:**
     * **CSRF Protection:** Prevents cross-site request forgery (CSRF) attacks by using secure tokens.
     * **Input Filtering:** Prevents SQL injection and cross-site scripting (XSS) attacks by filtering user inputs.
+    * **Data Encryption:** All data exchanges are encrypted via HTTPS.
  
 ### 4. Non-Functional Requirements
 
@@ -59,6 +70,13 @@
 ### 5. Technical Requirements
 
 * __Platform(s):__ The app will be available via a webpage, and accessible for both iPhone and Android.
+* __Technology Stack:__
+   * Front-End: React.js for building a dynamic and responsive user interface.
+   * Back-End: Node.js with Express.js or Python with Django for server-side logic.
+   * Database: PostgreSQL or MongoDB for data storage.
+   * Authentication: Integration with BU's Kerberos authentication system.
+   * APIs: Google Maps API for map functionalities.
+                        
 * __Integrations:__ Google Maps for map integration.
 
 ### 6. Constraints and Assumptions
@@ -124,8 +142,8 @@ Create this specific to your project plan.
 
 | ID  | Task                       | Description                                               | Sprint   | Status        |
 |-----|----------------------------|-----------------------------------------------------------|----------|---------------|
-| 1   | Create User Registration    | Design and implement a form for new users to sign up.      | 2        | Not Started   |
-| 2   | Implement Login Functionality | Develop a login system for existing users.                | 3        | Not Started   |
+| 1   | Create User Registration    | Design and implement a form for new users to sign up.      | 2        | Started   |
+| 2   | Implement Login Functionality | Develop a login system for existing users.                | 3        | Started   |
 | 3   | Integrate Food Registry     | Connect the platform to a payment processor.               | 4        | Not Started   |
 | 4   | Design Dashboard Layout     | Create a visually appealing dashboard for users to view their data. | 4 | Not Started   |
 | 5   | Develop Email Notifications | Set up email notifications for various events (e.g., new orders, password resets). | 5 | Not Started |

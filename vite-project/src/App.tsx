@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Button, Layout, Menu, List, Typography } from 'antd';
+import { Button, Layout, Menu, List, Typography, Modal } from 'antd';
 import axios from 'axios';
 import './App.css';
+import Login from './Login';
 
 const { Header, Content, Footer } = Layout;
 const { Title, Paragraph } = Typography;
 
 function App() {
   const [events, setEvents] = useState([]);
+  const [isLoginModalVisible, setIsLoginModalVisible] = useState(false);
 
   useEffect(() => {
     // Fetch events from the server
@@ -22,6 +24,14 @@ function App() {
       .catch((error) => console.error('Error creating event:', error));
   };
 
+  const showLoginModal = () => {
+    setIsLoginModalVisible(true);
+  };
+
+  const handleLoginCancel = () => {
+    setIsLoginModalVisible(false);
+  };
+
   return (
     <Layout className="layout">
       <Header>
@@ -30,6 +40,7 @@ function App() {
           <Menu.Item key="1"><a href="#about">About</a></Menu.Item>
           <Menu.Item key="2"><a href="#events">Events</a></Menu.Item>
           <Menu.Item key="3"><a href="#contact">Contact</a></Menu.Item>
+          <Menu.Item key="4" onClick={showLoginModal}>Login</Menu.Item>
         </Menu>
       </Header>
       <Content style={{ padding: '50px', backgroundColor: '#f0f2f5' }}>
@@ -57,6 +68,14 @@ function App() {
       <Footer style={{ textAlign: 'center' }}>
         &copy; 2024 SparkBytes. All Rights Reserved.
       </Footer>
+      <Modal
+        title="Login"
+        visible={isLoginModalVisible}
+        onCancel={handleLoginCancel}
+        footer={null}
+      >
+        <Login onCancel={handleLoginCancel} />
+      </Modal>
     </Layout>
   );
 }

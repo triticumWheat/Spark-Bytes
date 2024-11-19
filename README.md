@@ -27,6 +27,7 @@ List what is needed to run the project:
 ## Running the application
 
 1. Run the application:
+    ```bash
     python3 manage.py runserver
 
 2. Open web browser

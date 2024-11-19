@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Event: {{ event.name }}</h1>
+    <section>
+        <img src="{{ event.img.url }}" alt="Event Image" style="max-width: 300px; object-fit: cover;">
+        <p>Description: {{ event.description }}</p>
+        <p>Location: {{ event.location }}</p>
+        <p>Date: {{ event.date }}</p>
+
+        <h2>Created by:</h2>
+        <a href="{% url 'profile_detail' profile.id %}">{{ profile.user.username }}</a>
+    </section>
+{% endblock %}

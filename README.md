@@ -11,9 +11,11 @@ List what is needed to run the project:
 ## Installation
 
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/<USERNAME>/Spark-Bytes.git
-   cd Spark-Bytes
+    To clone the repository, replace `<USERNAME>` with your GitHub username:
+
+    ```bash
+    git clone https://github.com/<USERNAME>/Spark-Bytes.git
+    cd Spark-Bytes
 
 2. Create Venv:
     python3.10 -m venv venv

@@ -18,10 +18,12 @@ List what is needed to run the project:
     cd Spark-Bytes
 
 2. Create Venv:
+    ```bash
     python3.10 -m venv venv
-    source venv/bin/activate  # On Windows: venv\Scripts\activate
+    source venv/bin/activate 
 
 3. Install Depdencies:
+    ```bash
     pip install -r requirements.txt
 
 ## Running the application

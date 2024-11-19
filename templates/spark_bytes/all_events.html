@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>All Events</h1>
+<section>
+    <ul>
+        {% for event in events %}
+        <li>
+            <h2>{{ event.name }}</h2>
+            <img src="{{ event.img.url }}" alt="Event Image" style="max-width: 100%; border-radius: 10px;">
+            <p>Description: {{ event.description }}</p>
+            <p>Location: {{ event.location }}</p>
+            <p>Date: {{ event.date }}</p>
+            <p>
+                Created by:
+                <a href="{% url 'profile_detail' event.created_by.id %}">{{ event.created_by.user.username }}</a>
+            </p>
+            <p><a href="{% url 'event_detail' event.id %}">View Event</a></p>
+        </li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}

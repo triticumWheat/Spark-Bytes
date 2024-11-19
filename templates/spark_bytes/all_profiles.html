@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>All Profiles</h1>
+<section>
+    <ul>
+        {% for profile in profiles %}
+        <li>
+            <h2>{{ profile.user.username }}</h2>
+            <img src="{{ profile.img.url }}" alt="Profile Image" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
+            <p>BUID: {{ profile.buid }}</p>
+            <p>Email: {{ profile.user.email }}</p>
+            <p><a href="{% url 'profile_detail' profile.id %}">View Profile</a></p>
+        </li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}

@@ -12,7 +12,7 @@ List what is needed to run the project:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/[username]/Spark-Bytes.git
+   git clone https://github.com/<USERNAME>/Spark-Bytes.git
    cd Spark-Bytes
 
 2. Create Venv:

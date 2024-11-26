@@ -2,13 +2,62 @@
 
 {% block content %}
 <h1>Event: {{ event.name }}</h1>
-    <section>
-        <img src="{{ event.img.url }}" alt="Event Image" style="max-width: 300px; object-fit: cover;">
-        <p>Description: {{ event.description }}</p>
-        <p>Location: {{ event.location }}</p>
-        <p>Date: {{ event.date }}</p>
+<section>
+    <img src="{{ event.img.url }}" alt="Event Image" style="max-width: 300px; object-fit: cover;">
+    <p><strong>Description:</strong> {{ event.description }}</p>
+    <p><strong>Location:</strong> {{ event.location }}</p>
+    <p><strong>Date:</strong> {{ event.date }}</p>
 
-        <h2>Created by:</h2>
-        <a href="{% url 'profile_detail' profile.id %}">{{ profile.user.username }}</a>
-    </section>
+    <h2>Created by:</h2>
+    <a href="{% url 'profile_detail' profile.id %}">{{ profile.user.username }}</a>
+
+    <!-- Display new fields -->
+    <h2>Food Information</h2>
+    <p><strong>Food Items:</strong> {{ event.food_items }}</p>
+    <p><strong>Food Types:</strong> {{ event.food_types }}</p>
+    <p><strong>Allergies:</strong> {{ event.allergies }}</p>
+
+    <!-- Reservation section -->
+    <h2>Reserve Your Spot</h2>
+    {% if user.is_authenticated %}
+        {% if user.profile in event.reserved_by.all %}
+            <p>You have already reserved a spot for this event.</p>
+        {% else %}
+            <form id="reserve-form" method="post" action="{% url 'reserve_spot' event.id %}">
+                {% csrf_token %}
+                <button type="submit">Reserve Spot</button>
+            </form>
+            <script>
+                document.getElementById('reserve-form').onsubmit = function(e) {
+                    e.preventDefault();
+                    const form = e.target;
+                    const url = form.action;
+                    fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value,
+                        },
+                    })
+                    .then(response => response.json())
+                    .then(data => alert(data.message))
+                    .catch(error => alert('An error occurred.'));
+                };
+            </script>
+        {% endif %}
+    {% else %}
+        <p><a href="{% url 'login' %}">Log in</a> to reserve a spot.</p>
+    {% endif %}
+
+    <!-- Display list of reserved profiles -->
+    <h2>Reserved Spots</h2>
+    {% if event.reserved_by.exists %}
+        <ul>
+            {% for profile in event.reserved_by.all %}
+            <li>{{ profile.user.username }} ({{ profile.user.email }})</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No reservations yet.</p>
+    {% endif %}
+</section>
 {% endblock %}

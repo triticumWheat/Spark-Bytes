@@ -5,7 +5,7 @@
     padding: 0;
 }
 html, body {
-    overflow-x: hidden;
+    overflow-x: auto;
     margin: 0;
     padding: 0;
     width: 100%;
@@ -22,6 +22,7 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     display: flex;
     flex-direction: column;
+    padding-bottom: 3em; /* Match or slightly exceed the footer height */
 }
 
 header {
@@ -91,10 +92,16 @@ footer {
     color: white;
     padding: 1em;
     text-align: center;
-    position: sticky;
+    position: sticky; /* Ensures it sticks at the bottom while scrolling */
     bottom: 0;
-    position: fixed;
     width: 100%;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
     z-index: 1000;
 }
+
+
+body {
+    padding-bottom: 4em; /* Set to slightly exceed the footer height */
+}
+
+

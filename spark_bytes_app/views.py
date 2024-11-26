@@ -4,6 +4,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, FormView, CreateView
+from django.http import JsonResponse
 
 from .forms import CustomUserCreationForm, CustomAuthenticationForm, EventForm
 from .models import Profile, Event
@@ -66,6 +67,26 @@ class CreateEventView(LoginRequiredMixin, CreateView):
         profile = Profile.objects.get(user=self.request.user)
         form.instance.created_by = profile
         return super().form_valid(form)
+
+
+
+class ReserveSpotView(LoginRequiredMixin, DetailView):
+    model = Event
+    template_name = 'spark_bytes/event_detail.html'
+    context_object_name = 'event'
+
+    def post(self, request, *args, **kwargs):
+        event = self.get_object()
+        profile = Profile.objects.get(user=request.user)
+
+        # Check if the user has already reserved a spot
+        if event.reserved_by.filter(id=profile.id).exists():
+            return JsonResponse({'message': 'You have already reserved a spot for this event.'}, status=400)
+
+        # Add the profile to the reservation list
+        event.reserved_by.add(profile)
+        return JsonResponse({'message': 'Reservation successful!'}, status=200)
+
 
 
 class CustomLoginView(LoginView):

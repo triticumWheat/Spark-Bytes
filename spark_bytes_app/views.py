@@ -14,6 +14,46 @@ class EventListView(ListView):
     template_name = 'spark_bytes/all_events.html'
     context_object_name = 'events'
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        # Get the search parameters from the request
+        name = self.request.GET.get('name', '')
+        location = self.request.GET.get('location', '')
+        date = self.request.GET.get('date', '')
+        food_type = self.request.GET.get('food_type', '')
+        allergies = self.request.GET.get('allergy', '')
+
+        # Filter based on search parameters
+        if name:
+            queryset = queryset.filter(name__icontains=name)
+        if location:
+            queryset = queryset.filter(location__icontains=location)
+        if date:
+            queryset = queryset.filter(date__date=date)
+        if food_type:
+            queryset = queryset.filter(food_types__icontains=food_type)  # Using __icontains for partial matches
+        if allergies:
+            queryset = queryset.filter(allergies__icontains=allergies)  # Using __icontains for partial matches
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Provide food types and allergies lists to the template
+        context['food_types'] = [
+            "Italian", "Mediterranean", "Salad", "American", "BBQ", 
+            "Chinese", "Korean", "Japanese", "Mexican", "Spanish", 
+            "Indian", "Thai", "Vietnamese", "Sushi", "Breakfast", 
+            "Lunch", "Vegan", "Vegetarian"
+        ]
+        context['allergies'] = [
+            "Dairy", "Soy", "Nuts", "Fish", "Shellfish", "Eggs", 
+            "Wheat", "Sesame"
+        ]
+        return context
+
+
 
 class ProfileListView(ListView):
     model = Profile
@@ -70,6 +110,7 @@ class CreateEventView(LoginRequiredMixin, CreateView):
 
 
 
+
 class ReserveSpotView(LoginRequiredMixin, DetailView):
     model = Event
     template_name = 'spark_bytes/event_detail.html'
@@ -79,6 +120,10 @@ class ReserveSpotView(LoginRequiredMixin, DetailView):
         event = self.get_object()
         profile = Profile.objects.get(user=request.user)
 
+        # Check if the event is full
+        if event.is_full():
+            return JsonResponse({'message': 'This event is full. No more spots are available.'}, status=400)
+
         # Check if the user has already reserved a spot
         if event.reserved_by.filter(id=profile.id).exists():
             return JsonResponse({'message': 'You have already reserved a spot for this event.'}, status=400)
@@ -86,6 +131,7 @@ class ReserveSpotView(LoginRequiredMixin, DetailView):
         # Add the profile to the reservation list
         event.reserved_by.add(profile)
         return JsonResponse({'message': 'Reservation successful!'}, status=200)
+
 
 
 

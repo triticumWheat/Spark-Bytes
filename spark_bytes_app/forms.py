@@ -29,17 +29,20 @@ class CustomAuthenticationForm(AuthenticationForm):
         fields = ['username', 'password']
 
 
+
+
 class EventForm(forms.ModelForm):
     class Meta:
         model = Event
-        fields = ['name', 'description', 'img', 'location', 'date', 'food_items', 'food_types', 'allergies']
+        fields = ['name', 'description', 'img', 'location', 'date', 'food_types', 'allergies', 'reservation_limit']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),
             'img': forms.ClearableFileInput(attrs={'class': 'form-control'}),
             'location': forms.TextInput(attrs={'class': 'form-control'}),
             'date': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'}),
-            'food_items': forms.Textarea(attrs={'class': 'form-control'}),
-            'food_types': forms.TextInput(attrs={'class': 'form-control'}),
-            'allergies': forms.Textarea(attrs={'class': 'form-control'}),
+            'food_types': forms.Select(attrs={'class': 'form-control'}),
+            'allergies': forms.Select(attrs={'class': 'form-control'}),
+            'reservation_limit': forms.NumberInput(attrs={'class': 'form-control'}),
         }
+

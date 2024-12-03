@@ -2,21 +2,53 @@
 
 {% block content %}
 <h1>All Events</h1>
+
+<!-- Search Form -->
+<form method="get" class="search-form" style="margin-bottom: 20px;">
+    <input type="text" name="name" placeholder="Search by name" value="{{ request.GET.name }}">
+    <input type="text" name="location" placeholder="Search by location" value="{{ request.GET.location }}">
+    <input type="date" name="date" placeholder="Search by date" value="{{ request.GET.date }}">
+    
+    <!-- Dropdown for food types -->
+    <select name="food_type">
+        <option value="">All Food Types</option>
+        {% for food_type in food_types %}
+        <option value="{{ food_type }}" {% if request.GET.food_type == food_type %}selected{% endif %}>
+            {{ food_type }}
+        </option>
+        {% endfor %}
+    </select>
+    
+    <!-- Dropdown for allergies -->
+    <select name="allergy">
+        <option value="">All Allergies</option>
+        {% for allergy in allergies %}
+        <option value="{{ allergy }}" {% if request.GET.allergy == allergy %}selected{% endif %}>
+            {{ allergy }}
+        </option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">Search</button>
+</form>
+
 <section>
-    <ul>
+    <ul style="list-style: none; padding: 0;">
         {% for event in events %}
-        <li>
+        <li style="margin-bottom: 20px;">
             <h2>{{ event.name }}</h2>
             <img src="{{ event.img.url }}" alt="Event Image" style="max-width: 100%; border-radius: 10px;">
-            <p>Description: {{ event.description }}</p>
-            <p>Location: {{ event.location }}</p>
-            <p>Date: {{ event.date }}</p>
+            <p><strong>Description:</strong> {{ event.description }}</p>
+            <p><strong>Location:</strong> {{ event.location }}</p>
+            <p><strong>Date:</strong> {{ event.date }}</p>
             <p>
-                Created by:
+                <strong>Created by:</strong>
                 <a href="{% url 'profile_detail' event.created_by.id %}">{{ event.created_by.user.username }}</a>
             </p>
             <p><a href="{% url 'event_detail' event.id %}">View Event</a></p>
         </li>
+        {% empty %}
+        <p>No events match your search criteria.</p>
         {% endfor %}
     </ul>
 </section>

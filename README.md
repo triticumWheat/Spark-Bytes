@@ -34,3 +34,7 @@ List what is needed to run the project:
 
 2. Open web browser
     Visit: http://127.0.0.1:8000/
+
+## Deployment
+
+visit https://sparkbytes-cbcb12916fe3.herokuapp.com/

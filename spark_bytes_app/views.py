@@ -117,6 +117,13 @@ class CreateEventView(LoginRequiredMixin, CreateView):
 
 
 
+from django.shortcuts import render
+from .utils import generate_qr_code  # Import the QR code generation function
+
+from django.shortcuts import render
+from django.http import JsonResponse
+from .utils import generate_qr_code
+
 class ReserveSpotView(LoginRequiredMixin, DetailView):
     model = Event
     template_name = 'spark_bytes/event_detail.html'
@@ -136,9 +143,17 @@ class ReserveSpotView(LoginRequiredMixin, DetailView):
 
         # Add the profile to the reservation list
         event.reserved_by.add(profile)
-        return JsonResponse({'message': 'Reservation successful!'}, status=200)
 
+        # Generate QR code
+        unique_data = f"{profile.user.email}_{event.id}"
+        qr_code_data = generate_qr_code(unique_data)
 
+        # Save and reload event to ensure consistency
+        event.save()
+        return JsonResponse({
+            'message': 'Reservation successful!',
+            'qr_code': qr_code_data
+        }, status=200)
 
 
 class CustomLoginView(LoginView):

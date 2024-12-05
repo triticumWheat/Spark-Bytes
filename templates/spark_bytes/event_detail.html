@@ -3,7 +3,7 @@
 {% block content %}
 <div class="content-wrapper">
     <h1>Event: {{ event.name }}</h1>
-    
+
     {% if user.is_superuser %}
         <p style="color: green; font-weight: bold;">You are logged in as an admin.</p>
         <form id="delete-event-form" method="post" action="{% url 'delete_event' event.id %}">
@@ -36,7 +36,7 @@
             });
         </script>
     {% endif %}
-    
+
     <section>
         <img src="{{ event.img.url }}" alt="Event Image" style="max-width: 300px; object-fit: cover;">
         <p><strong>Description:</strong> {{ event.description }}</p>
@@ -65,6 +65,10 @@
                 {% if user.is_authenticated %}
                     {% if user.profile in event.reserved_by.all %}
                         <p>You have already reserved a spot for this event.</p>
+                        {% if qr_code %}
+                            <h2>Your QR Code:</h2>
+                            <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code">
+                        {% endif %}
                     {% else %}
                         <form id="reserve-form" method="post" action="{% url 'reserve_spot' event.id %}">
                             {% csrf_token %}
@@ -75,6 +79,12 @@
                     <p><a href="{% url 'login' %}">Log in</a> to reserve a spot.</p>
                 {% endif %}
             </div>
+        {% endif %}
+
+        <!-- Display QR Code if available -->
+        {% if qr_code %}
+            <h2>Your QR Code:</h2>
+            <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code">
         {% endif %}
 
         <!-- Display list of reserved profiles -->
@@ -125,6 +135,8 @@
                 } else {
                     reserveSection.innerHTML = `
                         <p>You have already reserved a spot for this event.</p>
+                        <h2>Your QR Code:</h2>
+                        <img src="data:image/png;base64,${data.qr_code}" alt="QR Code">
                     `;
                 }
             }
@@ -136,3 +148,4 @@
     });
 </script>
 {% endblock %}
+

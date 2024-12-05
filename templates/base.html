@@ -12,7 +12,7 @@
     <header>
         <h1>Spark! Bytes</h1>
         <nav>
-            <ul>
+            <ul class="navbar">
                 <li><a href="{% url 'all_events' %}">Events</a></li>
                 <li><a href="{% url 'all_profiles' %}">Profiles</a></li>
                 {% if user.is_authenticated %}
@@ -24,6 +24,7 @@
                 {% endif %}
             </ul>
         </nav>
+        
     </header>
 
     <main>

@@ -1,0 +1,137 @@
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: pink;
+}
+
+html {
+    height: 1000%;
+    background-color: pink;
+ /* Adjust colors as needed */
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: block;
+    flex-direction: column;
+}
+
+
+header {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 1em;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 20px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #EF96C5;
+}
+
+section {
+    padding: 2em;
+    margin: 2em auto;
+    max-width: 800px;
+    background-color: rgba(255, 255, 255, 0.4);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+}
+
+
+h1 {
+    color: white;
+    text-align: center;
+    font-size: 2.5em;
+    margin-bottom: 0.5em;
+}
+
+h2 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 1em;
+}
+footer {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 1em;
+    text-align: center;
+    position: sticky; /* Ensures it sticks at the bottom while scrolling */
+    bottom: 0;
+    width: 100%;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.content-wrapper {
+    flex: 1; /* Takes the remaining space to push footer down */
+}
+
+body {
+    padding-bottom: 4em; /* Set to slightly exceed the footer height */
+}
+
+/*styles for the search bar */
+.search-form {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.search-form input,
+.search-form button {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.search-form button {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border: none;
+}
+
+.search-form button:hover {
+    background-color: #0056b3;
+}

@@ -4,33 +4,32 @@
     margin: 0;
     padding: 0;
 }
+
 html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: column;
 }
-
 
 body {
-    background-image: linear-gradient(to bottom right, #CCFBFF, #EF96C5);
-    font-size: large;
-    color: dimgray;
-    text-align: left;
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     display: flex;
     flex-direction: column;
-    padding-bottom: 3em; /* Match or slightly exceed the footer height */
+
+    background: linear-gradient(to bottom, #d95089, #d5cdcf, #2d68c0); /* Adjust colors here */
+    background-attachment: fixed; /* Ensures the gradient stays fixed during scrolling */
+    background-size: cover; /* Ensures it covers the entire viewport */
+    font-size: large;
+    color: dimgray;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+
+
 
 header {
     background-color: rgba(0, 0, 0, 0.8);
     color: white;
-    padding: 1em;
+    padding: 0.5em;
     text-align: center;
     position: sticky;
     top: 0;
@@ -58,13 +57,15 @@ nav ul li a {
     color: white;
     text-decoration: none;
     font-weight: bold;
-    transition: color 0.3s ease;
+    font-size: 1.5em; /* Match this to the Spark Bytes font size */
+    padding: 0.5em 1em; /* Adjust padding to make buttons visually larger */
+    transition: color 0.3s ease, transform 0.2s ease; /* Add smooth hover effect */
 }
 
 nav ul li a:hover {
-    color: #EF96C5;
+    color: #EF96C5; /* Keeps the hover color */
+    transform: scale(1.1); /* Slight hover zoom effect */
 }
-
 section {
     padding: 2em;
     margin: 2em auto;

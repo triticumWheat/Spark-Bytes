@@ -4,30 +4,40 @@
 <h1>All Events</h1>
 
 <!-- Search Form -->
-<form method="get" class="search-form" style="margin-bottom: 20px;">
+<form method="get" class="search-form">
     <input type="text" name="name" placeholder="Search by name" value="{{ request.GET.name }}">
     <input type="text" name="location" placeholder="Search by location" value="{{ request.GET.location }}">
     <input type="date" name="date" placeholder="Search by date" value="{{ request.GET.date }}">
-    
-    <!-- Dropdown for food types -->
-    <select name="food_type">
-        <option value="">All Food Types</option>
-        {% for food_type in food_types %}
-        <option value="{{ food_type }}" {% if request.GET.food_type == food_type %}selected{% endif %}>
-            {{ food_type }}
-        </option>
-        {% endfor %}
-    </select>
-    
-    <!-- Dropdown for allergies -->
-    <select name="allergy">
-        <option value="">All Allergies</option>
-        {% for allergy in allergies %}
-        <option value="{{ allergy }}" {% if request.GET.allergy == allergy %}selected{% endif %}>
-            {{ allergy }}
-        </option>
-        {% endfor %}
-    </select>
+
+    <!-- Custom multi-select dropdown for food types -->
+    <div class="dropdown">
+        <label for="food_types">Select Food Types:</label>
+        <button type="button" class="dropdown-toggle">Select Food Types</button>
+        <div class="dropdown-menu">
+            {% for choice in food_types %}
+            <label class="dropdown-item">
+                <input type="checkbox" name="food_types" value="{{ choice }}"
+                       {% if choice in selected_food_types %}checked{% endif %}>
+                {{ choice }}
+            </label>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Custom multi-select dropdown for allergies -->
+    <div class="dropdown">
+        <label for="allergies">Select Allergies:</label>
+        <button type="button" class="dropdown-toggle">Select Allergies</button>
+        <div class="dropdown-menu">
+            {% for choice in allergies %}
+            <label class="dropdown-item">
+                <input type="checkbox" name="allergies" value="{{ choice }}"
+                       {% if choice in selected_allergies %}checked{% endif %}>
+                {{ choice }}
+            </label>
+            {% endfor %}
+        </div>
+    </div>
 
     <button type="submit">Search</button>
 </form>
@@ -52,4 +62,43 @@
         {% endfor %}
     </ul>
 </section>
+
+<!-- Style for the custom dropdown -->
+<style>
+    .dropdown {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 20px;
+    }
+    .dropdown-toggle {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        background-color: white;
+        border: 1px solid #ccc;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        padding: 10px;
+        z-index: 1000;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+    .dropdown-item {
+        margin: 5px 0;
+        display: flex;
+        align-items: center;
+    }
+    .dropdown-item input {
+        margin-right: 10px;
+    }
+</style>
 {% endblock %}

@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, FormView, CreateView
 from django.http import JsonResponse
+from django.contrib.auth.mixins import UserPassesTestMixin
 
 from .forms import CustomUserCreationForm, CustomAuthenticationForm, EventForm
 from .models import Profile, Event
@@ -17,12 +18,12 @@ class EventListView(ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
 
-        # Get the search parameters from the request
+        # Get search parameters
         name = self.request.GET.get('name', '')
         location = self.request.GET.get('location', '')
         date = self.request.GET.get('date', '')
-        food_type = self.request.GET.get('food_type', '')
-        allergies = self.request.GET.get('allergy', '')
+        food_types = self.request.GET.getlist('food_types')  # Get list of selected food types
+        allergies = self.request.GET.getlist('allergies')  # Get list of selected allergies
 
         # Filter based on search parameters
         if name:
@@ -31,10 +32,12 @@ class EventListView(ListView):
             queryset = queryset.filter(location__icontains=location)
         if date:
             queryset = queryset.filter(date__date=date)
-        if food_type:
-            queryset = queryset.filter(food_types__icontains=food_type)  # Using __icontains for partial matches
+        if food_types:
+            # Filter events that match ANY of the selected food types
+            queryset = queryset.filter(food_types__in=food_types)
         if allergies:
-            queryset = queryset.filter(allergies__icontains=allergies)  # Using __icontains for partial matches
+            for allergy in allergies:
+                queryset = queryset.filter(allergies__icontains=allergy)
 
         return queryset
 
@@ -51,6 +54,9 @@ class EventListView(ListView):
             "Dairy", "Soy", "Nuts", "Fish", "Shellfish", "Eggs", 
             "Wheat", "Sesame"
         ]
+        # Pass the selected values back to the template
+        context['selected_food_types'] = self.request.GET.getlist('food_types')
+        context['selected_allergies'] = self.request.GET.getlist('allergies')
         return context
 
 
@@ -145,3 +151,16 @@ class CustomLoginView(LoginView):
 
 class CustomLogoutView(LogoutView):
     next_page = 'login'
+
+# Function-based view to delete an event
+class DeleteEventView(UserPassesTestMixin, DetailView):
+    model = Event
+    template_name = "spark_bytes/event_detail.html"
+
+    def test_func(self):
+        return self.request.user.is_superuser  # Restrict to admin users
+
+    def post(self, request, *args, **kwargs):
+        event = self.get_object()
+        event.delete()
+        return JsonResponse({'message': 'Event deleted successfully!'}, status=200)

@@ -5,10 +5,90 @@
 <section>
   <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
-      {{ form.as_p }}
+      
+      <!-- Render form fields excluding allergies and food types -->
+      {% for field in form %}
+      {% if field.name not in "allergies food_types" %}
+      <div class="form-group">
+          {{ field.label_tag }}
+          {{ field }}
+          {% if field.help_text %}
+          <small class="form-text text-muted">{{ field.help_text }}</small>
+          {% endif %}
+      </div>
+      {% endif %}
+      {% endfor %}
+
+      <!-- Custom multi-select dropdown for food types -->
+      <div class="dropdown">
+          <label for="id_food_types">Select Food Types:</label>
+          <button type="button" class="dropdown-toggle">Choose Food Types</button>
+          <div class="dropdown-menu">
+              {% for choice in form.food_types.field.choices %}
+              <label class="dropdown-item">
+                  <input type="checkbox" name="food_types" value="{{ choice.0 }}"
+                         {% if choice.0 in form.food_types.value %}checked{% endif %}>
+                  {{ choice.1 }}
+              </label>
+              {% endfor %}
+          </div>
+      </div>
+
+      <!-- Custom multi-select dropdown for allergies -->
+      <div class="dropdown">
+          <label for="id_allergies">Select Allergies:</label>
+          <button type="button" class="dropdown-toggle">Choose Allergies</button>
+          <div class="dropdown-menu">
+              {% for choice in form.allergies.field.choices %}
+              <label class="dropdown-item">
+                  <input type="checkbox" name="allergies" value="{{ choice.0 }}"
+                         {% if choice.0 in form.allergies.value %}checked{% endif %}>
+                  {{ choice.1 }}
+              </label>
+              {% endfor %}
+          </div>
+      </div>
+
       <button type="submit" class="btn btn-primary">Create Event</button>
   </form>
-  <!-- Add spacing or text here -->
-  <div style="height: 150px;"></div> <!-- Empty space -->
+  <!-- Add spacing -->
+  <div style="height: 150px;"></div>
 </section>
+
+<!-- Styles for dropdown -->
+<style>
+    .dropdown {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 20px;
+    }
+    .dropdown-toggle {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        background-color: white;
+        border: 1px solid #ccc;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        padding: 10px;
+        z-index: 1000;
+    }
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+    .dropdown-item {
+        margin: 5px 0;
+        display: flex;
+        align-items: center;
+    }
+    .dropdown-item input {
+        margin-right: 10px;
+    }
+</style>
 {% endblock %}

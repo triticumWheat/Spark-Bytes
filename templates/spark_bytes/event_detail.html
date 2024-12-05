@@ -3,6 +3,40 @@
 {% block content %}
 <div class="content-wrapper">
     <h1>Event: {{ event.name }}</h1>
+    
+    {% if user.is_superuser %}
+        <p style="color: green; font-weight: bold;">You are logged in as an admin.</p>
+        <form id="delete-event-form" method="post" action="{% url 'delete_event' event.id %}">
+            {% csrf_token %}
+            <button type="submit" style="color: red; font-weight: bold;">Delete Event</button>
+        </form>
+        <script>
+            document.getElementById('delete-event-form').addEventListener('submit', function (e) {
+                e.preventDefault();
+                const form = e.target;
+                const url = form.action;
+
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value,
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                    if (data.message === 'Event deleted successfully!') {
+                        window.location.href = "{% url 'all_events' %}";
+                    }
+                })
+                .catch(error => {
+                    alert('An error occurred.');
+                    console.error(error);
+                });
+            });
+        </script>
+    {% endif %}
+    
     <section>
         <img src="{{ event.img.url }}" alt="Event Image" style="max-width: 300px; object-fit: cover;">
         <p><strong>Description:</strong> {{ event.description }}</p>

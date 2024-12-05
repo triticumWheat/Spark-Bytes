@@ -1,3 +1,4 @@
+/* Reset and Global Styles */
 *::before,
 *::after {
     box-sizing: border-box;
@@ -5,166 +6,231 @@
     padding: 0;
 }
 
-html, body {
-    height: 100%;
+body {
+    background: linear-gradient(135deg, #ffffff, #f9f9f9);
+    font-family: 'Roboto', sans-serif;
+    color: #333;
     margin: 0;
     padding: 0;
-}
-
-body {
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background: linear-gradient(to bottom, #d95089, #d5cdcf, #2d68c0); /* Adjust colors here */
-    background-attachment: fixed; /* Ensures the gradient stays fixed during scrolling */
-    background-size: cover; /* Ensures it covers the entire viewport */
-    font-size: large;
-    color: dimgray;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden;
 }
 
+/* Header and Navbar */
 header {
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 1em;
-    text-align: center;
+    background-color: #ffffff;
+    color: #333;
+    padding: 0.8em 1.5em; /* Balanced padding: Top/Bottom 0.8em, Left/Right 1em */
     position: sticky;
     top: 0;
     width: 100%;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    border-bottom: 2px solid #cc0000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     z-index: 1000;
     display: flex;
-    justify-content: space-between; /* Keeps Spark Bytes and buttons spaced */
-    align-items: center; /* Ensures vertical alignment */
+    flex-wrap: wrap;
+    justify-content: space-between; /* Ensure items are spaced properly */
+    align-items: center;
+    box-sizing: border-box; /* Ensures padding doesn't cause overflow */
+}
+
+
+header h1 {
+    font-size: 1.5em;
+    margin: 0;
+    font-weight: bold;
+    color: #cc0000;
 }
 
 nav ul {
     list-style: none;
-    padding: 0;
-    margin: 0;
     display: flex;
-    justify-content: center; /* Horizontal centering */
-    align-items: center; /* Vertical centering */
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    justify-content: flex-start;
 }
 
 nav ul li {
-    margin: 0 20px;
+    flex-shrink: 0;
 }
 
 nav ul li a {
-    color: white;
+    color: #555;
     text-decoration: none;
-    font-weight: bold;
-    font-size: 1.5em; /* Matches Spark Bytes font size */
-    padding: 0.5em 1em; /* Adds spacing inside buttons */
-    transition: color 0.3s ease, transform 0.2s ease; /* Hover effect */
+    font-weight: 500;
+    padding: 0.5em 0.8em;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
 }
 
 nav ul li a:hover {
-    color: #EF96C5;
-    transform: scale(1.1);
+    color: #cc0000;
+    border-bottom: 2px solid #cc0000;
 }
 
+/* Navbar Responsive Design */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 5px;
+        width: 100%;
+    }
+
+    nav ul li {
+        width: 100%;
+    }
+}
+
+/* Main Content */
+main {
+    flex: 1;
+    padding: 2em 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff;
+    width: 100%;
+    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
+    overflow-x: hidden;
+}
+
+/* Section Content */
 section {
-    padding: 2em;
-    margin: 2em auto;
-    max-width: 800px;
-    background-color: rgba(255, 255, 255, 0.4);
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease;
+    width: 100%;
+    max-width: 900px;
+    background-color: #ffffff;
+    padding: 1.5em;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    margin: 2em 0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+section:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(-3px);
 }
 
 h1 {
-    color: white;
+    font-size: 2em;
     text-align: center;
-    font-size: 2.5em;
+    color: #333;
     margin-bottom: 0.5em;
 }
 
 h2 {
-    color: #333;
+    font-size: 1.6em;
+    color: #555;
     text-align: center;
     margin-bottom: 1em;
 }
 
+/* Footer */
 footer {
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 1em;
+    background-color: #ffffff;
+    color: #333;
     text-align: center;
-    position: sticky; /* Ensures it sticks at the bottom while scrolling */
+    padding: 1em 2em;
+    border-top: 2px solid #cc0000;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
     bottom: 0;
     width: 100%;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
-    z-index: 1000;
 }
 
-.content-wrapper {
-    flex: 1; /* Takes the remaining space to push footer down */
+footer p {
+    margin: 0;
+    font-size: 0.9em;
 }
 
-body {
-    padding-bottom: 4em; /* Set to slightly exceed the footer height */
-}
-
-/* Styles for the search bar */
+/* Search Form */
 .search-form {
-    margin-bottom: 20px;
     display: flex;
+    flex-wrap: nowrap;
     gap: 10px;
-    flex-wrap: wrap;
+    margin-bottom: 25px;
+    justify-content: flex-start;
+    max-width: 950px;
+    width: 100%;
 }
 
 .search-form input,
 .search-form button {
-    padding: 10px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    padding: 12px 12px;
+    font-size: 16px;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+}
+
+.search-form input {
+    flex: 1;
+    min-width: 0;
+    background-color: #f5f5f5;
 }
 
 .search-form button {
-    background-color: #007bff;
+    background-color: #cc0000;
     color: white;
-    cursor: pointer;
     border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    flex-shrink: 0;
 }
 
 .search-form button:hover {
-    background-color: #0056b3;
+    background-color: #a30000;
+    transform: scale(1.05);
 }
 
-/* Styles for the custom dropdowns */
+/* Dropdown Menus */
 .dropdown {
     position: relative;
     display: inline-block;
-    margin-bottom: 20px;
-    width: 150px; /* Adjust width to align with inputs */
+    font-size: 13px;
 }
 
 .dropdown-toggle {
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
+    padding: 6px 10px;
+    background-color: #ffffff;
+    color: #333;
+    border: 1px solid #aaa;
     border-radius: 5px;
     cursor: pointer;
-    text-align: left;
-    width: 100%; /* Match input width */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 150px;
+}
+
+.dropdown-toggle:hover {
+    background-color: #f1f1f1;
 }
 
 .dropdown-menu {
     display: none;
     position: absolute;
+    left: 0;
+    top: 100%;
     background-color: white;
-    border: 1px solid #ccc;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    padding: 10px;
+    border: 1px solid #aaa;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
     z-index: 1000;
-    max-height: 200px;
+    width: 100%;
+    padding: 5px 0;
+    border-radius: 5px;
     overflow-y: auto;
-    width: 100%; /* Match input width */
+    max-height: 150px;
 }
 
 .dropdown:hover .dropdown-menu {
@@ -172,18 +238,34 @@ body {
 }
 
 .dropdown-item {
-    margin: 5px 0;
+    padding: 6px 8px;
+    font-size: 13px;
+    color: #333;
+    cursor: pointer;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    white-space: nowrap;
+}
+
+.dropdown-item:hover {
+    background-color: #f5f5f5;
+}
+
+.dropdown-item span {
+    padding-left: 15px;
+    text-align: left;
+    flex: 1;
 }
 
 .dropdown-item input {
-    margin-right: 10px;
+    margin-right: 5px;
+    text-align: right;
 }
 
-/* Image styles in event list */
-section ul li img {
+/* Event Images */
+section img {
     max-width: 100%;
     border-radius: 10px;
-    margin-top: 10px;
+    margin-bottom: 10px;
 }

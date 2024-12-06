@@ -1,0 +1,18 @@
+<html>
+    <body>
+        <h1>Reservation Confirmation</h1>
+        <p>Hi {{ event.created_by.user.username }},</p>
+        <p>You have successfully reserved a spot for the event: <strong>{{ event.name }}</strong>.</p>
+        <p>Event Details:</p>
+        <ul>
+            <li><strong>Description:</strong> {{ event.description }}</li>
+            <li><strong>Location:</strong> {{ event.location }}</li>
+            <li><strong>Date:</strong> {{ event.date }}</li>
+        </ul>
+
+        <p>Here is your QR code for the event:</p>
+        <img src="cid:qr_code.png" alt="QR Code">
+
+        <p>Thank you for reserving a spot!</p>
+    </body>
+</html>

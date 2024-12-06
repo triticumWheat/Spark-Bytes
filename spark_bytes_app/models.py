@@ -2,13 +2,18 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+# models.py
+from django.db import models
+from django.contrib.auth.models import User
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    buid = models.PositiveIntegerField(unique=True)
-    img = models.ImageField(upload_to='profile_images/')
+    buid = models.CharField(max_length=8)
+    img = models.ImageField(upload_to='profile_pics/', default='default.jpg')
 
     def __str__(self):
-        return self.user.username
+        return f'{self.user.username} Profile'
+
 
 
 class Event(models.Model):

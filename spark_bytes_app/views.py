@@ -86,6 +86,12 @@ class EventDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['profile'] = self.object.created_by
         return context
+# views.py
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
+from django.views.generic import FormView
+from .forms import CustomUserCreationForm
+from .models import Profile
 
 
 class RegisterView(FormView):
@@ -93,14 +99,26 @@ class RegisterView(FormView):
     form_class = CustomUserCreationForm
 
     def form_valid(self, form):
+        # Save the new user
         user = form.save()
+
+        # Create a new Profile for the user
         Profile.objects.create(
             user=user,
             buid=form.cleaned_data['buid'],
             img=form.cleaned_data['img']
         )
+
+        # Log the user in immediately after registration
         login(self.request, user)
+
+        # Redirect to the 'all_events' page after successful registration
         return redirect('all_events')
+
+    def form_invalid(self, form):
+        # This method will be triggered if the form is invalid
+        print(form.errors)  # Log the errors if needed for debugging
+        return super().form_invalid(form)
 
 
 class CreateEventView(LoginRequiredMixin, CreateView):
@@ -124,6 +142,10 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from .utils import generate_qr_code
 
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+
 class ReserveSpotView(LoginRequiredMixin, DetailView):
     model = Event
     template_name = 'spark_bytes/event_detail.html'
@@ -138,7 +160,7 @@ class ReserveSpotView(LoginRequiredMixin, DetailView):
             return JsonResponse({'message': 'This event is full. No more spots are available.'}, status=400)
 
         # Check if the user has already reserved a spot
-        if event.reserved_by.filter(id=profile.id).exists():
+        if profile in event.reserved_by.all():
             return JsonResponse({'message': 'You have already reserved a spot for this event.'}, status=400)
 
         # Add the profile to the reservation list
@@ -148,12 +170,34 @@ class ReserveSpotView(LoginRequiredMixin, DetailView):
         unique_data = f"{profile.user.email}_{event.id}"
         qr_code_data = generate_qr_code(unique_data)
 
+        # Send email with QR code
+        self.send_qr_code_email(profile.user.email, event, qr_code_data)
+
         # Save and reload event to ensure consistency
         event.save()
         return JsonResponse({
             'message': 'Reservation successful!',
             'qr_code': qr_code_data
         }, status=200)
+
+    def send_qr_code_email(self, user_email, event, qr_code_data):
+        """Send an email with the QR code to the user."""
+        subject = f"Your reservation for {event.name}"
+        message = render_to_string('spark_bytes/email/qr_code_email.html', {
+            'event': event,
+            'qr_code_data': qr_code_data,
+        })
+        plain_message = strip_tags(message)
+
+        email = EmailMessage(
+            subject,
+            plain_message,
+            'ckraus99@gmail.com',  # From email (this can be the same as EMAIL_HOST_USER)
+            [user_email],  # Recipient email
+        )
+        email.content_subtype = 'html'  # Email format: HTML
+        email.attach('qr_code.png', qr_code_data, 'image/png')  # Attach QR code as image file
+        email.send()
 
 
 class CustomLoginView(LoginView):

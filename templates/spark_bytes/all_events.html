@@ -15,10 +15,9 @@
         <div class="dropdown-menu">
             {% for choice in food_types %}
             <label class="dropdown-item">
-                <span style="text-align: left; flex: 1;">{{ choice }}</span>
                 <input type="checkbox" name="food_types" value="{{ choice }}"
-                       style="text-align: right;"
                        {% if choice in selected_food_types %}checked{% endif %}>
+                {{ choice }}
             </label>
             {% endfor %}
         </div>
@@ -30,10 +29,9 @@
         <div class="dropdown-menu">
             {% for choice in allergies %}
             <label class="dropdown-item">
-                <span style="text-align: left; flex: 1;">{{ choice }}</span>
                 <input type="checkbox" name="allergies" value="{{ choice }}"
-                       style="text-align: right;"
                        {% if choice in selected_allergies %}checked{% endif %}>
+                {{ choice }}
             </label>
             {% endfor %}
         </div>
@@ -62,4 +60,43 @@
         {% endfor %}
     </ul>
 </section>
+
+<!-- Style for the custom dropdown -->
+<style>
+    .dropdown {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 20px;
+    }
+    .dropdown-toggle {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        background-color: white;
+        border: 1px solid #ccc;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        padding: 10px;
+        z-index: 1000;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+    .dropdown-item {
+        margin: 5px 0;
+        display: flex;
+        align-items: center;
+    }
+    .dropdown-item input {
+        margin-right: 10px;
+    }
+</style>
 {% endblock %}

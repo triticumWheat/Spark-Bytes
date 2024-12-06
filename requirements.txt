@@ -4,4 +4,3 @@ whitenoise
 Pillow
 plotly
 pandas
-qrcode

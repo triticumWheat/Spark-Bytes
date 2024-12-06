@@ -6,9 +6,13 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, FormView, CreateView
 from django.http import JsonResponse
 from django.contrib.auth.mixins import UserPassesTestMixin
-
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 from .forms import CustomUserCreationForm, CustomAuthenticationForm, EventForm
 from .models import Profile, Event
+import base64
+
 
 class EventListView(ListView):
     model = Event
@@ -136,15 +140,14 @@ class CreateEventView(LoginRequiredMixin, CreateView):
 
 
 from django.shortcuts import render
-from .utils import generate_qr_code  # Import the QR code generation function
-
-from django.shortcuts import render
 from django.http import JsonResponse
-from .utils import generate_qr_code
-
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import DetailView
+from .models import Profile, Event
+from .utils import generate_qr_code  # Assuming this function generates the QR code
 
 class ReserveSpotView(LoginRequiredMixin, DetailView):
     model = Event
@@ -183,20 +186,37 @@ class ReserveSpotView(LoginRequiredMixin, DetailView):
     def send_qr_code_email(self, user_email, event, qr_code_data):
         """Send an email with the QR code to the user."""
         subject = f"Your reservation for {event.name}"
+
+        # Render the HTML message
         message = render_to_string('spark_bytes/email/qr_code_email.html', {
             'event': event,
-            'qr_code_data': qr_code_data,
+            'qr_code_data': qr_code_data,  # QR code is base64 encoded string
         })
+
+        # Create the plain text version by stripping HTML tags
         plain_message = strip_tags(message)
 
-        email = EmailMessage(
+        # Create the email with both plain text and HTML versions
+        email = EmailMultiAlternatives(
             subject,
-            plain_message,
+            plain_message,  # plain text message
             'ckraus99@gmail.com',  # From email (this can be the same as EMAIL_HOST_USER)
             [user_email],  # Recipient email
         )
-        email.content_subtype = 'html'  # Email format: HTML
-        email.attach('qr_code.png', qr_code_data, 'image/png')  # Attach QR code as image file
+
+        email.content_subtype = 'html'  # Set the email to HTML format
+
+        # Create an image file for the QR code
+        img_data = base64.b64decode(qr_code_data)  # Decode base64 QR code data
+
+        # Attach the QR code as an inline image with the correct CID (Content-ID)
+        email.mixed_subtype = 'related'
+        email.attach('qr_code.png', img_data, 'image/png')  # Attach as inline image
+
+        # Set the Content-ID so the image can be referenced inline in the email
+        email.attach_alternative(message, "text/html")  # Ensure HTML content is included
+
+        # Send the email
         email.send()
 
 

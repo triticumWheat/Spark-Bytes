@@ -35,12 +35,13 @@ class CustomAuthenticationForm(AuthenticationForm):
         fields = ['username', 'password']
 
 
-
+from django import forms
+from .models import Event
 
 class EventForm(forms.ModelForm):
     class Meta:
         model = Event
-        fields = ['name', 'description', 'img', 'location', 'date', 'food_types', 'allergies', 'reservation_limit']
+        fields = ['name', 'description', 'img', 'location', 'date', 'food_types', 'allergies', 'reservation_limit', 'latitude', 'longitude']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),
@@ -50,5 +51,7 @@ class EventForm(forms.ModelForm):
             'food_types': forms.Select(attrs={'class': 'form-control'}),
             'allergies': forms.Select(attrs={'class': 'form-control'}),
             'reservation_limit': forms.NumberInput(attrs={'class': 'form-control'}),
+            'latitude': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter latitude', 'step': 'any'}),  # Added latitude field
+            'longitude': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter longitude', 'step': 'any'}),  # Added longitude field
         }
 

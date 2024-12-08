@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from spark_bytes import settings
 from spark_bytes_app.views import EventDetailView, ProfileDetailView, EventListView, ProfileListView, CustomLoginView, \
-    CustomLogoutView, RegisterView, CreateEventView, ReserveSpotView, DeleteEventView
+    CustomLogoutView, RegisterView, CreateEventView, ReserveSpotView, DeleteEventView, EventMapView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,6 +33,7 @@ urlpatterns = [
     path('create_event/', CreateEventView.as_view(), name='create_event'),
     path('events/<int:pk>/reserve/', ReserveSpotView.as_view(), name='reserve_spot'),
     path('event/<int:pk>/delete/', DeleteEventView, name='delete_event'),
+    path('events/map/', EventMapView.as_view(), name='event_map'), 
 
 ]
 if settings.DEBUG:

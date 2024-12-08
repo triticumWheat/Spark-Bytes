@@ -15,10 +15,10 @@ class Profile(models.Model):
         return f'{self.user.username} Profile'
 
 
+from django.db import models
 
 class Event(models.Model):
-
-        # Define choices
+    # Define choices for food types and allergies (same as your existing code)
     FOOD_TYPES = [
         ('Italian', 'Italian'),
         ('Mediterranean', 'Mediterranean'),
@@ -50,6 +50,8 @@ class Event(models.Model):
         ('Wheat', 'Wheat'),
         ('Sesame', 'Sesame'),
     ]
+    
+    # Fields for the Event model
     name = models.CharField(max_length=255)
     created_by = models.ForeignKey('Profile', on_delete=models.CASCADE)
     description = models.TextField()
@@ -65,6 +67,16 @@ class Event(models.Model):
     )
     reserved_by = models.ManyToManyField('Profile', related_name='reserved_events', blank=True)
     reservation_limit = models.PositiveIntegerField(default=50, help_text="Maximum number of reservations for this event")
+    
+
+
+    # Other fields...
+    latitude = models.FloatField(blank=True, null=True)  # Remove max_digits and decimal_places
+    longitude = models.FloatField(blank=True, null=True)  # Remove max_digits and decimal_places
+
+    # Other methods...
+
+
 
     def is_full(self):
         """Check if the event has reached its reservation limit."""
@@ -72,7 +84,3 @@ class Event(models.Model):
 
     def __str__(self):
         return f"Event: {self.name} by {self.created_by.user.username}"
-
-
-
-

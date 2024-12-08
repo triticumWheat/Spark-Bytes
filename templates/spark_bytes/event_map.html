@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% load custom_filters %}
+
+{% block content %}
+    <style>
+        #map {
+            height: 500px; /* Ensure the map container has a defined height */
+            width: 100%;   /* Ensure it stretches across the container */
+        }
+    </style>
+
+    <h1>Events Map</h1>
+    <div id="map"></div>
+
+    <!-- Google Maps API -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQ0VHfBMPDBnibPeYrVuXyfMxLllHHqBY&callback=initMap&libraries=geometry"></script>
+
+    <script>
+        // Pass the events data from Django to JavaScript
+        var eventsData = JSON.parse('{{ events|jsonify|safe }}');
+
+        // Initialize and add the map
+        function initMap() {
+            // Default location: Boston (or use the user's location if available)
+            var defaultLocation = {lat: 42.3505, lng: -71.1054};
+
+            // Create a map object and specify the DOM element for display
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 13,
+                center: defaultLocation
+            });
+
+            // Add a marker for the user's location (if available)
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var userLat = position.coords.latitude;
+                    var userLng = position.coords.longitude;
+                    var userLocation = {lat: userLat, lng: userLng};
+
+                    // Re-center the map to the user's location
+                    map.setCenter(userLocation);
+
+                    // Add a marker for the user's location
+                    var userMarker = new google.maps.Marker({
+                        position: userLocation,
+                        map: map,
+                        icon: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'  // Custom icon for user
+                    });
+
+                    // Calculate and display distance to the selected event (if any)
+                    eventsData.forEach(function(event) {
+                        var eventLocation = {lat: event.latitude, lng: event.longitude};
+                        var distance = google.maps.geometry.spherical.computeDistanceBetween(
+                            new google.maps.LatLng(userLocation),
+                            new google.maps.LatLng(eventLocation)
+                        );
+
+                        console.log("Distance to " + event.name + ": " + distance / 1000 + " km");
+                    });
+
+                }, function() {
+                    // If geolocation fails, show the default location
+                    map.setCenter(defaultLocation);
+                });
+            } else {
+                // If geolocation is not supported, show the default location
+                map.setCenter(defaultLocation);
+            }
+
+            // Add markers for all events
+            eventsData.forEach(function(event) {
+                var eventLocation = {lat: event.latitude, lng: event.longitude};
+                var eventMarker = new google.maps.Marker({
+                    position: eventLocation,
+                    map: map,
+                    title: event.name
+                });
+
+                // Add a click event for each marker to show event details in a popup
+                var infoWindow = new google.maps.InfoWindow({
+                    content: '<b>' + event.name + '</b><br>' + event.location
+                });
+
+                eventMarker.addListener('click', function() {
+                    infoWindow.open(map, eventMarker);
+                });
+            });
+        }
+    </script>
+{% endblock %}

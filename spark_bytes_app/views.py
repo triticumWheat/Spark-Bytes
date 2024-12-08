@@ -14,6 +14,7 @@ from .models import Profile, Event
 import base64
 
 
+
 class EventListView(ListView):
     model = Event
     template_name = 'spark_bytes/all_events.html'
@@ -125,16 +126,35 @@ class RegisterView(FormView):
         return super().form_invalid(form)
 
 
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
+from .models import Profile, Event
+
 class CreateEventView(LoginRequiredMixin, CreateView):
     model = Event
     form_class = EventForm
     template_name = 'spark_bytes/create_event.html'
-    success_url = '/events/'
+    success_url = reverse_lazy('all_events')  # Redirect after form submission
 
     def form_valid(self, form):
+        # Get the current user’s profile
         profile = Profile.objects.get(user=self.request.user)
+        
+        # Set the created_by field to the current user's profile
         form.instance.created_by = profile
+        
+        # Get the latitude and longitude from the form data (if provided)
+        latitude = form.cleaned_data.get('latitude')
+        longitude = form.cleaned_data.get('longitude')
+
+        # Ensure the coordinates are assigned
+        if latitude and longitude:
+            form.instance.latitude = latitude
+            form.instance.longitude = longitude
+
+        # Save the form instance with coordinates
         return super().form_valid(form)
+
 
 
 
@@ -243,3 +263,22 @@ class DeleteEventView(UserPassesTestMixin, DetailView):
         event = self.get_object()
         event.delete()
         return JsonResponse({'message': 'Event deleted successfully!'}, status=200)
+    
+    
+from django.shortcuts import render
+from django.views.generic import TemplateView
+from .models import Event
+
+class EventMapView(TemplateView):
+    template_name = 'spark_bytes/event_map.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        events = Event.objects.all()
+
+        # Debugging: Print the events and their coordinates
+        for event in events:
+            print(f"Event: {event.name}, Latitude: {event.latitude}, Longitude: {event.longitude}")
+
+        context['events'] = events
+        return context

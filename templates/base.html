@@ -6,7 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Spark! Bytes{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <style>
+        /* Ensure the body and html fill the entire viewport */
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
 
+        /* Ensure the main section takes up the full height */
+        main {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Ensure the map container takes up the full screen */
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+
+        /* Ensure header and footer don't mess with map layout */
+        header, footer {
+            z-index: 1;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -15,9 +39,11 @@
             <ul class="navbar">
                 <li><a href="{% url 'all_events' %}">Events</a></li>
                 <li><a href="{% url 'all_profiles' %}">Profiles</a></li>
+        
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'logout' %}">Logout</a></li>
                     <li><a href="{% url 'create_event' %}">Create Event</a></li>
+                    <li><a href="{% url 'event_map' %}">View Events on Map</a></li>  <!-- New link for the map -->
                 {% else %}
                     <li><a href="{% url 'login' %}">Login</a></li>
                     <li><a href="{% url 'register' %}">Register</a></li>
@@ -37,3 +63,4 @@
     </footer>
 </body>
 </html>
+

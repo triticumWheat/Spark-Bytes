@@ -19,6 +19,17 @@
       {% endif %}
       {% endfor %}
 
+      <!-- Add Latitude and Longitude fields -->
+      <div class="form-group">
+          <label for="id_latitude">Latitude:</label>
+          <input type="text" name="latitude" id="id_latitude" class="form-control" placeholder="Enter latitude">
+      </div>
+
+      <div class="form-group">
+          <label for="id_longitude">Longitude:</label>
+          <input type="text" name="longitude" id="id_longitude" class="form-control" placeholder="Enter longitude">
+      </div>
+
       <!-- Custom multi-select dropdown for food types -->
       <div class="dropdown">
           <label for="id_food_types">Select Food Types:</label>

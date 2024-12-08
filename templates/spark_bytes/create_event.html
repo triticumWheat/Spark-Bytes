@@ -1,112 +1,60 @@
-{% extends "base.html" %}
+{% endif %}
+{% endfor %}
 
-{% block content %}
-<h1>Create Event</h1>
-<section>
-  <form method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-      
-      <!-- Render form fields excluding allergies and food types -->
-      {% for field in form %}
-      {% if field.name not in "allergies food_types location description" %}
-      <div class="form-group">
-          {% if field.name == "name" or field.name == "email" %} 
-              {{ field.label_tag|add:" " }}  <!-- Add space after colon for name and email -->
-          {% else %}
-              {{ field.label_tag }}
-          {% endif %}
-          {{ field }}
-          {% if field.help_text %}
-          <small class="form-text text-muted">{{ field.help_text }}</small>
-          {% endif %}
-      </div>
-      {% endif %}
-      {% endfor %}
+<!-- Add Latitude and Longitude fields -->
+<div class="form-group">
+    <label for="id_latitude">Latitude:</label>
+    <input type="text" name="latitude" id="id_latitude" class="form-control" placeholder="Enter latitude">
+</div>
+<div class="form-group">
+    <label for="id_longitude">Longitude:</label>
+    <input type="text" name="longitude" id="id_longitude" class="form-control" placeholder="Enter longitude">
+</div>
+<!-- Remove the Latitude and Longitude text inputs since we will capture these values from the map -->
+<input type="hidden" name="latitude" id="id_latitude" />
+<input type="hidden" name="longitude" id="id_longitude" />
 
-      <!-- Remove the Latitude and Longitude text inputs since we will capture these values from the map -->
-      <input type="hidden" name="latitude" id="id_latitude" />
-      <input type="hidden" name="longitude" id="id_longitude" />
-
-      <!-- Custom multi-select dropdown for food types -->
-      <div class="dropdown">
-          <label for="id_food_types">Select Food Types:</label>
-          <button type="button" class="dropdown-toggle">Choose Food Types</button>
-          <div class="dropdown-menu">
-              {% for choice in form.food_types.field.choices %}
-              <label class="dropdown-item">
-                  <input type="checkbox" name="food_types" value="{{ choice.0 }}"
-                         {% if choice.0 in form.food_types.value %}checked{% endif %}>
-                  {{ choice.1 }}
-              </label>
-              {% endfor %}
-          </div>
-      </div>
-
-      <!-- Custom multi-select dropdown for allergies -->
-      <div class="dropdown">
-          <label for="id_allergies">Select Allergies:</label>
-          <button type="button" class="dropdown-toggle">Choose Allergies</button>
-          <div class="dropdown-menu">
-              {% for choice in form.allergies.field.choices %}
-              <label class="dropdown-item">
-                  <input type="checkbox" name="allergies" value="{{ choice.0 }}"
-                         {% if choice.0 in form.allergies.value %}checked{% endif %}>
-                  {{ choice.1 }}
-              </label>
-              {% endfor %}
-          </div>
-      </div>
-
-      <button type="submit" class="btn btn-primary">Create Event</button>
-  </form>
-  <!-- Add spacing -->
-  <div style="height: 15px;"></div>
-
-  <!-- Add text above the map -->
-  <div style="text-align: center; margin-bottom: 10px;">
-      <strong>Choose your event location</strong>
-  </div>
-
-  <!-- Google Maps API -->
-  <div id="map" style="height: 500px;"></div>
-
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQ0VHfBMPDBnibPeYrVuXyfMxLllHHqBY&callback=initMap&libraries=geometry"></script>
-
-  <script>
-    var map, marker;
-
-    function initMap() {
-        // Default location (e.g., Boston)
-        var defaultLocation = {lat: 42.3505, lng: -71.1054};
-
-        // Create a map object and specify the DOM element for display
-        map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 13,
-            center: defaultLocation
-        });
-
-        // Create a marker that can be placed by clicking on the map
-        marker = new google.maps.Marker({
-            map: map,
-            position: defaultLocation,
-            draggable: true  // Allow dragging the marker
-        });
-
-        // Listen for clicks on the map to place the marker
-        google.maps.event.addListener(map, 'click', function(event) {
-            var lat = event.latLng.lat();
-            var lng = event.latLng.lng();
-
-            // Move the marker to the clicked location
-            marker.setPosition(event.latLng);
-
-            // Update the hidden inputs with the latitude and longitude
-            document.getElementById('id_latitude').value = lat;
-            document.getElementById('id_longitude').value = lng;
-
-            console.log('Latitude: ' + lat + ', Longitude: ' + lng);
-        });
-    }
-  </script>
+<!-- Custom multi-select dropdown for food types -->
+<div class="dropdown">
+@@ -64,5 +57,52 @@ <h1>Create Event</h1>
+</form>
+<!-- Add spacing -->
+<div style="height: 150px;"></div>
+<!-- Add text above the map -->
+<div style="text-align: center; margin-bottom: 10px;">
+<strong>Choose your event location</strong>
+</div>
+<!-- Google Maps API -->
+<div id="map" style="height: 500px;"></div>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQ0VHfBMPDBnibPeYrVuXyfMxLllHHqBY&callback=initMap&libraries=geometry"></script>
+<script>
+var map, marker;
+function initMap() {
+  // Default location (e.g., Boston)
+  var defaultLocation = {lat: 42.3505, lng: -71.1054};
+  // Create a map object and specify the DOM element for display
+  map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 13,
+      center: defaultLocation
+  });
+  // Create a marker that can be placed by clicking on the map
+  marker = new google.maps.Marker({
+      map: map,
+      position: defaultLocation,
+      draggable: true  // Allow dragging the marker
+  });
+  // Listen for clicks on the map to place the marker
+  google.maps.event.addListener(map, 'click', function(event) {
+      var lat = event.latLng.lat();
+      var lng = event.latLng.lng();
+      // Move the marker to the clicked location
+      marker.setPosition(event.latLng);
+      // Update the hidden inputs with the latitude and longitude
+      document.getElementById('id_latitude').value = lat;
+      document.getElementById('id_longitude').value = lng;
+      console.log('Latitude: ' + lat + ', Longitude: ' + lng);
+  });
+}
+</script>
 </section>
 {% endblock %}

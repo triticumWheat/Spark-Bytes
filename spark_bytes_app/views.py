@@ -129,6 +129,10 @@ class RegisterView(FormView):
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from .models import Profile, Event
+from django.shortcuts import render
+from django.http import HttpResponse
+from .forms import EventForm
+from .models import Event
 
 class CreateEventView(LoginRequiredMixin, CreateView):
     model = Event
@@ -137,6 +141,7 @@ class CreateEventView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('all_events')  # Redirect after form submission
 
     def form_valid(self, form):
+        print("Form is valid")
         # Get the current user’s profile
         profile = Profile.objects.get(user=self.request.user)
         
@@ -155,9 +160,10 @@ class CreateEventView(LoginRequiredMixin, CreateView):
         # Save the form instance with coordinates
         return super().form_valid(form)
 
-
-
-
+    def form_invalid(self, form):
+        print("Form is invalid")
+        print(form.errors)
+        return super().form_invalid(form)
 
 from django.shortcuts import render
 from django.http import JsonResponse
@@ -274,11 +280,11 @@ class EventMapView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        events = Event.objects.all()
+        events = Event.objects.all()  # Ensure that you get all the events
 
         # Debugging: Print the events and their coordinates
         for event in events:
             print(f"Event: {event.name}, Latitude: {event.latitude}, Longitude: {event.longitude}")
 
-        context['events'] = events
+        context['events'] = events  # Pass the events to the template
         return context

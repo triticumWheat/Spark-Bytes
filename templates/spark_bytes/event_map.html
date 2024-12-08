@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% load custom_filters %}
 
@@ -26,12 +26,11 @@
         // Pass the events data from Django to JavaScript
         var eventsData = JSON.parse('{{ events|jsonify|safe }}');
 
-        // Initialize and add the map
-        function initMap() {
-            // Default location: Boston (or use the user's location if available)
-            var defaultLocation = {lat: 42.3505, lng: -71.1054};
+// Debugging: Print eventsData to the console to ensure the data is passed correctly
+        console.log(eventsData);
 
-            // Create a map object and specify the DOM element for display
+        function initMap() {
+            var defaultLocation = {lat: 42.3505, lng: -71.1054};
             var map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 13,
                 center: defaultLocation
@@ -54,35 +53,30 @@
                         icon: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'  // Custom icon for user
                     });
 
-                    // Calculate and display distance to the selected event (if any)
+                    // Add event markers
                     eventsData.forEach(function(event) {
-                        var eventLocation = {lat: event.latitude, lng: event.longitude};
-                        var distance = google.maps.geometry.spherical.computeDistanceBetween(
-                            new google.maps.LatLng(userLocation),
-                            new google.maps.LatLng(eventLocation)
-                        );
+                        if (event.latitude && event.longitude) { // Ensure valid lat/lng
+                            var eventLocation = {lat: event.latitude, lng: event.longitude};
+                            var eventMarker = new google.maps.Marker({
+                                position: eventLocation,
+                                map: map,
+                                title: event.name
+                            });
 
-                        console.log("Distance to " + event.name + ": " + distance / 1000 + " km");
+                            var infoWindow = new google.maps.InfoWindow({
+                                content: '<b>' + event.name + '</b><br>' + event.description
+                                });
 
-                        // Add info window with the distance
-                        var infoWindow = new google.maps.InfoWindow({
-                            content: '<b>' + event.name + '</b><br>' + event.location + 
-                                     '<br>Distance: ' + (distance / 1000).toFixed(2) + ' km'
-                        });
-
-                        var eventMarker = new google.maps.Marker({
-                            position: eventLocation,
-                            map: map,
-                            title: event.name
-                        });
-
-                        eventMarker.addListener('click', function() {
-                            infoWindow.open(map, eventMarker);
-                        });
+                            eventMarker.addListener('click', function() {
+                                infoWindow.open(map, eventMarker);
+                            });
+                        } else {
+                            console.log('Invalid location for event:', event.name);
+                        }
                     });
 
                 }, function() {
-                    // If geolocation fails, show the default location and event markers
+                    // If geolocation fails, show the default location
                     map.setCenter(defaultLocation);
 
                     // Add event markers without the distance info
@@ -95,7 +89,7 @@
                         });
 
                         var infoWindow = new google.maps.InfoWindow({
-                            content: '<b>' + event.name + '</b><br>' + event.location
+                            content: '<b>' + event.name + '</b><br>' + event.description
                         });
 
                         eventMarker.addListener('click', function() {
@@ -107,7 +101,7 @@
                 // If geolocation is not supported, show the default location and event markers
                 map.setCenter(defaultLocation);
 
-                // Add event markers without the distance info
+                // Add event markers
                 eventsData.forEach(function(event) {
                     var eventLocation = {lat: event.latitude, lng: event.longitude};
                     var eventMarker = new google.maps.Marker({
@@ -117,7 +111,7 @@
                     });
 
                     var infoWindow = new google.maps.InfoWindow({
-                        content: '<b>' + event.name + '</b><br>' + event.location
+                        content: '<b>' + event.name + '</b><br>' + event.description
                     });
 
                     eventMarker.addListener('click', function() {

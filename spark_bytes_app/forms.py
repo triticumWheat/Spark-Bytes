@@ -37,21 +37,47 @@ class CustomAuthenticationForm(AuthenticationForm):
 
 from django import forms
 from .models import Event
-
 class EventForm(forms.ModelForm):
+    def clean_latitude(self):
+        latitude = self.cleaned_data.get('latitude')
+        # Remove this validation if latitude is populated by the map
+        if latitude is None:
+            raise forms.ValidationError('Latitude is required.')
+        return round(latitude, 6)  # Round latitude to 6 decimal places
+
+    def clean_longitude(self):
+        longitude = self.cleaned_data.get('longitude')
+        # Remove this validation if longitude is populated by the map
+        if longitude is None:
+            raise forms.ValidationError('Longitude is required.')
+        return round(longitude, 6)  # Round longitude to 6 decimal places
+
     class Meta:
         model = Event
-        fields = ['name', 'description', 'img', 'location', 'date', 'food_types', 'allergies', 'reservation_limit', 'latitude', 'longitude']
+        fields = ['name', 'img', 'date', 'food_types', 'allergies', 'reservation_limit', 'latitude', 'longitude', 'description']
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'description': forms.Textarea(attrs={'class': 'form-control'}),
-            'img': forms.ClearableFileInput(attrs={'class': 'form-control'}),
-            'location': forms.TextInput(attrs={'class': 'form-control'}),
-            'date': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'}),
-            'food_types': forms.Select(attrs={'class': 'form-control'}),
-            'allergies': forms.Select(attrs={'class': 'form-control'}),
-            'reservation_limit': forms.NumberInput(attrs={'class': 'form-control'}),
-            'latitude': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter latitude', 'step': 'any'}),  # Added latitude field
-            'longitude': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter longitude', 'step': 'any'}),  # Added longitude field
+            'name': forms.TextInput(attrs={'class': 'form-control', 'id': 'id_name'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'id': 'id_description'}),
+            'img': forms.ClearableFileInput(attrs={'class': 'form-control', 'id': 'id_img'}),
+            'date': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local', 'id': 'id_date'}),
+            'food_types': forms.Select(attrs={'class': 'form-control', 'id': 'id_food_types'}),
+            'allergies': forms.Select(attrs={'class': 'form-control', 'id': 'id_allergies'}),
+            'reservation_limit': forms.NumberInput(attrs={'class': 'form-control', 'id': 'id_reservation_limit'}),
+            'latitude': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter latitude', 'step': 'any', 'id': 'id_latitude'}),
+            'longitude': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter longitude', 'step': 'any', 'id': 'id_longitude'}),
         }
 
+
+
+    # Remove the custom validation methods as latitude and longitude are optional
+    # def clean_latitude(self):
+    #     latitude = self.cleaned_data.get('latitude')
+    #     if latitude is None:
+    #         raise forms.ValidationError('Latitude is required.')
+    #     return latitude
+
+    # def clean_longitude(self):
+    #     longitude = self.cleaned_data.get('longitude')
+    #     if longitude is None:
+    #         raise forms.ValidationError('Longitude is required.')
+    #     return longitude

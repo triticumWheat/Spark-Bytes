@@ -19,7 +19,7 @@
       {% endif %}
       {% endfor %}
 
-      <!-- Add Latitude and Longitude fields -->
+      <!-- Latitude and Longitude fields (Not read-only for testing purposes) -->
       <div class="form-group">
           <label for="id_latitude">Latitude:</label>
           <input type="text" name="latitude" id="id_latitude" class="form-control" placeholder="Enter latitude">
@@ -29,6 +29,10 @@
           <label for="id_longitude">Longitude:</label>
           <input type="text" name="longitude" id="id_longitude" class="form-control" placeholder="Enter longitude">
       </div>
+
+      <!-- Hidden Latitude and Longitude fields for form submission -->
+      <input type="hidden" name="latitude" id="hidden_latitude">
+      <input type="hidden" name="longitude" id="hidden_longitude">
 
       <!-- Custom multi-select dropdown for food types -->
       <div class="dropdown">
@@ -64,5 +68,62 @@
   </form>
   <!-- Add spacing -->
   <div style="height: 150px;"></div>
+
+  <!-- Google Maps API (Map at the bottom of the page) -->
+  <div id="map" style="height: 500px;"></div>
+
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQ0VHfBMPDBnibPeYrVuXyfMxLllHHqBY&callback=initMap&libraries=geometry"></script>
+
+  <script>
+    var map, marker;
+
+    function initMap() {
+        // Default location: Boston (or use the user's location if available)
+        var defaultLocation = {lat: 42.3505, lng: -71.1054};
+
+        // Create a map object and specify the DOM element for display
+        map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 13,
+            center: defaultLocation
+        });
+
+        // Create a marker that can be placed by clicking on the map
+        marker = new google.maps.Marker({
+            map: map,
+            position: defaultLocation,
+            draggable: true  // Allow dragging the marker
+        });
+
+        // Listen for clicks on the map to place the marker
+        google.maps.event.addListener(map, 'click', function(event) {
+            var lat = event.latLng.lat();
+            var lng = event.latLng.lng();
+
+            // Move the marker to the clicked location
+            marker.setPosition(event.latLng);
+
+            // Update the inputs with the latitude and longitude
+            document.getElementById('id_latitude').value = lat;
+            document.getElementById('id_longitude').value = lng;
+
+            // Update hidden fields for form submission
+            document.getElementById('hidden_latitude').value = lat;
+            document.getElementById('hidden_longitude').value = lng;
+        });
+
+        // Update latitude and longitude fields if the marker is dragged
+        google.maps.event.addListener(marker, 'dragend', function() {
+            var lat = marker.getPosition().lat();
+            var lng = marker.getPosition().lng();
+            document.getElementById('id_latitude').value = lat;
+            document.getElementById('id_longitude').value = lng;
+
+            // Update hidden fields for form submission
+            document.getElementById('hidden_latitude').value = lat;
+            document.getElementById('hidden_longitude').value = lng;
+        });
+    }
+  </script>
 </section>
 {% endblock %}
+

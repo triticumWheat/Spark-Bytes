@@ -143,7 +143,7 @@ class CreateEventView(LoginRequiredMixin, CreateView):
         # Set the created_by field to the current user's profile
         form.instance.created_by = profile
         
-        # Get the latitude and longitude from the form data (if provided)
+        # Get the latitude and longitude from the form data
         latitude = form.cleaned_data.get('latitude')
         longitude = form.cleaned_data.get('longitude')
 
@@ -154,6 +154,7 @@ class CreateEventView(LoginRequiredMixin, CreateView):
 
         # Save the form instance with coordinates
         return super().form_valid(form)
+
 
 
 

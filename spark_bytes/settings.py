@@ -168,3 +168,12 @@ TEMPLATES = [
         },
     },
 ]
+
+# settings.py
+
+# Auth0 Configuration
+AUTH0_DOMAIN = 'http://127.0.0.1:8000/'
+AUTH0_CLIENT_ID = 'CATpoFQh3ivQ0l8yF2MjVvLfTaeNPjtW'
+AUTH0_CLIENT_SECRET = 'gFNa-zAigGYotCxHwuUndFzggX9-R8iyKPqcKzixd4S1E-6rnT-Q_9A2iDioG0UZ'
+AUTH0_API_IDENTIFIER = 'your-api-identifier'  # optional, for API access
+AUTH0_CALLBACK_URL = 'http://localhost:8000/callback'

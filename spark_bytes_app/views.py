@@ -148,7 +148,7 @@ class CreateEventView(LoginRequiredMixin, CreateView):
         # Set the created_by field to the current user's profile
         form.instance.created_by = profile
         
-        # Get the latitude and longitude from the form data (if provided)
+        # Get the latitude and longitude from the form data
         latitude = form.cleaned_data.get('latitude')
         longitude = form.cleaned_data.get('longitude')
 
@@ -164,6 +164,7 @@ class CreateEventView(LoginRequiredMixin, CreateView):
         print("Form is invalid")
         print(form.errors)
         return super().form_invalid(form)
+
 
 from django.shortcuts import render
 from django.http import JsonResponse

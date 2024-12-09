@@ -32,7 +32,7 @@ urlpatterns = [
     path('register/', RegisterView.as_view(), name='register'),
     path('create_event/', CreateEventView.as_view(), name='create_event'),
     path('events/<int:pk>/reserve/', ReserveSpotView.as_view(), name='reserve_spot'),
-    path('event/<int:pk>/delete/', DeleteEventView.as_view(), name='delete_event'),  # Correct
+    path('event/<int:pk>/delete/', DeleteEventView.as_view, name='delete_event'),
     path('events/map/', EventMapView.as_view(), name='event_map'), 
 
 ]

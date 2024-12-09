@@ -50,7 +50,7 @@
                 domain: "dev-yp3u6zjlilfd2lql.us.auth0.com",
                 clientId: "hf5h8aJdhA8KRsVsolSBbCfCUQPFqDRP",
                 authorizationParams: {
-                    redirect_uri: "http://127.0.0.1:8000/",
+                    redirect_uri: "http://127.0.0.1:8000/login",
                 },
             });
 
@@ -71,7 +71,7 @@
                 logoutButton.addEventListener("click", (e) => {
                     e.preventDefault();
                     auth0Client.logout({
-                        returnTo: window.location.origin,
+                        returnTo: "http://127.0.0.1:8000/logout",
                     });
                 });
             }

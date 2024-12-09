@@ -4,9 +4,16 @@
 
 {% block content %}
     <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
         #map {
             height: 500px; /* Ensure the map container has a defined height */
             width: 100%;   /* Ensure it stretches across the container */
+            height: calc(100vh - 50px); /* Adjust for header height */
+            width: 100%;
         }
     </style>
 

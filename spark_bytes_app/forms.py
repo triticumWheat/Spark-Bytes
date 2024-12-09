@@ -54,10 +54,11 @@ class EventForm(forms.ModelForm):
 
     class Meta:
         model = Event
-        fields = ['name', 'img', 'date', 'food_types', 'allergies', 'reservation_limit', 'latitude', 'longitude', 'description']
+        fields = ['name', 'img', 'date', 'food_types', 'allergies', 'reservation_limit', 'latitude', 'longitude', 'description', 'location']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'id': 'id_name'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'id': 'id_description'}),
+            
             'img': forms.ClearableFileInput(attrs={'class': 'form-control', 'id': 'id_img'}),
             'date': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local', 'id': 'id_date'}),
             'food_types': forms.Select(attrs={'class': 'form-control', 'id': 'id_food_types'}),
@@ -65,6 +66,7 @@ class EventForm(forms.ModelForm):
             'reservation_limit': forms.NumberInput(attrs={'class': 'form-control', 'id': 'id_reservation_limit'}),
             'latitude': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter latitude', 'step': 'any', 'id': 'id_latitude'}),
             'longitude': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter longitude', 'step': 'any', 'id': 'id_longitude'}),
+            'location': forms.TextInput(attrs={'class': 'form-control', 'id': 'id_location', 'placeholder': 'Enter organization name'}) 
         }
 
 

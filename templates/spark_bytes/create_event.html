@@ -61,72 +61,62 @@
         }
     </style>
     <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        
-        <!-- Render form fields excluding allergies and food types -->
-        {% for field in form %}
-        {% if field.name not in "allergies food_types" %}
-        <div class="form-group">
-            {% if field.label == "Location" %}
-                <label for="{{ field.id_for_label }}">Organization</label>
-            {% else %}
-                {{ field.label_tag }}
-            {% endif %}
-            {{ field }}
-            {% if field.help_text %}
-            <small class="form-text text-muted">{{ field.help_text }}</small>
-            {% endif %}
-        </div>
+    {% csrf_token %}
+
+    <!-- Render form fields excluding allergies and food types -->
+    {% for field in form %}
+    {% if field.name not in "allergies food_types" %}
+    <div class="form-group">
+        {% if field.label == "Location" %}
+            <label for="{{ field.id_for_label }}">Organization</label>
+        {% else %}
+            {{ field.label_tag }}
         {% endif %}
-        {% endfor %}
+        {{ field }}
+        {% if field.help_text %}
+        <small class="form-text text-muted">{{ field.help_text }}</small>
+        {% endif %}
+    </div>
+    {% endif %}
+    {% endfor %}
 
+    <!-- Hidden Latitude and Longitude fields for form submission -->
+    <input type="hidden" name="latitude" id="hidden_latitude">
+    <input type="hidden" name="longitude" id="hidden_longitude">
 
-        <!-- Latitude and Longitude fields
-        <div class="form-group">
-            <label for="id_latitude">Latitude:</label>
-            <input type="text" id="id_latitude" name="latitude" class="form-control" readonly>
+    <!-- Custom multi-select dropdown for food types -->
+    <div class="dropdown">
+        <label for="id_food_types">Select Food Types:</label>
+        <button type="button" class="dropdown-toggle">Choose Food Types</button>
+        <div class="dropdown-menu">
+            {% for choice in form.food_types.field.choices %}
+            <label class="dropdown-item">
+                <input type="checkbox" name="food_types" value="{{ choice.0 }}"
+                       {% if choice.0 in form.food_types.value %}checked{% endif %}>
+                {{ choice.1 }}
+            </label>
+            {% endfor %}
         </div>
-        <div class="form-group">
-            <label for="id_longitude">Longitude:</label>
-            <input type="text" id="id_longitude" name="longitude" class="form-control" readonly>
-        </div> -->
+    </div>
 
-        <!-- Hidden Latitude and Longitude fields for form submission -->
-        <input type="hidden" name="latitude" id="hidden_latitude">
-        <input type="hidden" name="longitude" id="hidden_longitude">
-
-        <!-- Custom multi-select dropdown for food types -->
-        <div class="dropdown">
-            <label for="id_food_types">Select Food Types:</label>
-            <button type="button" class="dropdown-toggle">Choose Food Types</button>
-            <div class="dropdown-menu">
-                {% for choice in form.food_types.field.choices %}
-                <label class="dropdown-item">
-                    <input type="checkbox" name="food_types" value="{{ choice.0 }}"
-                           {% if choice.0 in form.food_types.value %}checked{% endif %}>
-                    {{ choice.1 }}
-                </label>
-                {% endfor %}
-            </div>
+    <!-- Custom multi-select dropdown for allergies -->
+    <div class="dropdown">
+        <label for="id_allergies">Select Allergies:</label>
+        <button type="button" class="dropdown-toggle">Choose Allergies</button>
+        <div class="dropdown-menu">
+            {% for choice in form.allergies.field.choices %}
+            <label class="dropdown-item">
+                <input type="checkbox" name="allergies" value="{{ choice.0 }}"
+                       {% if choice.0 in form.allergies.value %}checked{% endif %}>
+                {{ choice.1 }}
+            </label>
+            {% endfor %}
         </div>
+    </div>
 
-        <!-- Custom multi-select dropdown for allergies -->
-        <div class="dropdown">
-            <label for="id_allergies">Select Allergies:</label>
-            <button type="button" class="dropdown-toggle">Choose Allergies</button>
-            <div class="dropdown-menu">
-                {% for choice in form.allergies.field.choices %}
-                <label class="dropdown-item">
-                    <input type="checkbox" name="allergies" value="{{ choice.0 }}"
-                           {% if choice.0 in form.allergies.value %}checked{% endif %}>
-                    {{ choice.1 }}
-                </label>
-                {% endfor %}
-            </div>
-        </div>
+    <button type="submit" class="btn btn-primary">Create Event</button>
+</form>
 
-        <button type="submit" class="btn btn-primary">Create Event</button>
-    </form>
 
     <!-- Google Maps API -->
     <div id="map"></div>

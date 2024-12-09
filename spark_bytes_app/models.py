@@ -59,7 +59,8 @@ class Event(models.Model):
     # The rest of your model...
 
     img = models.ImageField(upload_to='event_images/')
-    #location = models.CharField(max_length=255)
+    location = models.CharField(max_length=255, default="Default Location")
+
     date = models.DateTimeField()
     food_items = models.TextField(blank=True, null=True, help_text="List of food items available at the event")
     food_types = models.CharField(

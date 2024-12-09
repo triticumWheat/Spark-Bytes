@@ -5,15 +5,16 @@
         <p>You have successfully reserved a spot for the event: <strong>{{ event.name }}</strong>.</p>
         <p>Event Details:</p>
         <ul>
-            <li><strong>Description:</strong> {{ event.description }}</li>
-            <li><strong>Location:</strong> {{ event.location }}</li>
+            <!-- <li><strong>Description:</strong> {{ event.description }}</li> -->
+            <li><strong>Organization:</strong> {{ event.location }}</li>
             <li><strong>Date:</strong> {{ event.date }}</li>
         </ul>
 
-        <p>Here is your QR code for the event:</p>
+        
         <!-- Inline QR code image -->
-        <img src="cid:qr_code.png" alt="QR Code">
+        <!-- <img src="cid:qr_code.png" alt="QR Code"> -->
 
         <p>Thank you for reserving a spot!</p>
+        <p>Show this QR code upon arrival to redeem your food!:</p>
     </body>
 </html>

@@ -156,7 +156,7 @@ DEFAULT_FROM_EMAIL = env('EMAIL_HOST_USER')  # Default sender email
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [BASE_DIR / 'templates'],  # Ensure this points to your templates directory
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -168,12 +168,32 @@ TEMPLATES = [
         },
     },
 ]
+CSP_SCRIPT_SRC = [
+    "'self'",
+    "https://cdn.auth0.com",
+]
+
 
 # settings.py
+AUTH0_DOMAIN = "dev-yp3u6zjlilfd2lql.us.auth0.com"
+AUTH0_CLIENT_ID = "hf5h8aJdhA8KRsVsolSBbCfCUQPFqDRP"
+AUTH0_CLIENT_SECRET = "OJtltkZpAyWTnX-8I9IqozTahjBjezsX2g0aPaC3JvgHwTG1aCNPQJXpZdUbvedZ"
+AUTH0_CALLBACK_URL = "http://127.0.0.1:8000"  # Replace with your actual callback URL
+AUTH0_API_IDENTIFIER = "https://your-api-identifier/"  # Optional if you're calling an API
+AUTH0_JWKS_URI = f"https://{AUTH0_DOMAIN}/.well-known/jwks.json"
 
-# Auth0 Configuration
-AUTH0_DOMAIN = 'http://127.0.0.1:8000/'
-AUTH0_CLIENT_ID = 'CATpoFQh3ivQ0l8yF2MjVvLfTaeNPjtW'
-AUTH0_CLIENT_SECRET = 'gFNa-zAigGYotCxHwuUndFzggX9-R8iyKPqcKzixd4S1E-6rnT-Q_9A2iDioG0UZ'
-AUTH0_API_IDENTIFIER = 'your-api-identifier'  # optional, for API access
-AUTH0_CALLBACK_URL = 'http://localhost:8000/callback'
+LOGIN_URL = '/login'
+LOGOUT_URL = '/logout'
+LOGIN_REDIRECT_URL = '/'
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',  # Ensure this is included
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    # Your other apps
+    'spark_bytes_app',  # Your app
+    'spark_bytes',
+]

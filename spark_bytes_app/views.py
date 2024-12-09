@@ -13,6 +13,75 @@ from .forms import CustomUserCreationForm, CustomAuthenticationForm, EventForm
 from .models import Profile, Event
 import base64
 
+# Add these imports if they are not already present
+from django.shortcuts import redirect
+from jose import jwt
+import requests
+from django.conf import settings
+
+# Add this function near your login/logout views or at a logical place
+from django.shortcuts import render, redirect
+from django.conf import settings
+from jose import jwt
+import requests
+
+# views.py
+from django.shortcuts import render
+from django.conf import settings
+
+def base_view(request):
+    return render(request, "base.html", {
+        "auth0_domain": settings.AUTH0_DOMAIN,
+        "auth0_client_id": settings.AUTH0_CLIENT_ID,
+        "logout_url": "http://localhost:8000",  # Replace with your logout URL
+    })
+
+# Add this function near your login/logout views
+from django.shortcuts import redirect
+from jose import jwt
+import requests
+from django.conf import settings
+
+def auth0_callback(request):
+    code = request.GET.get('code')
+    if not code:
+        return redirect('login')  # Redirect to login if no code is present
+
+    token_url = f"https://{settings.AUTH0_DOMAIN}/oauth/token"
+    token_payload = {
+        'grant_type': 'authorization_code',
+        'client_id': settings.AUTH0_CLIENT_ID,
+        'client_secret': settings.AUTH0_CLIENT_SECRET,
+        'code': code,
+        'redirect_uri': "http://localhost:8000/login/callback/",  # Update as per your callback URL
+    }
+    token_response = requests.post(token_url, json=token_payload)
+    tokens = token_response.json()
+
+    id_token = tokens.get('id_token')
+    if not id_token:
+        return redirect('login')  # Redirect back to login if ID token is missing
+
+    try:
+        # Decode ID token
+        decoded_token = jwt.decode(
+            id_token,
+            requests.get(f"https://{settings.AUTH0_DOMAIN}/.well-known/jwks.json").json(),
+            audience=settings.AUTH0_CLIENT_ID,
+            algorithms=["RS256"]
+        )
+
+        # Store user info in session
+        request.session['user'] = decoded_token
+    except Exception as e:
+        print(f"Error decoding token: {e}")
+        return redirect('login')
+
+    # Redirect to all_events
+    return redirect('all_events')
+
+
+
 
 
 class EventListView(ListView):

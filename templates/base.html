@@ -7,29 +7,7 @@
     <title>{% block title %}Spark! Bytes{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
     <style>
-        /* Ensure the body and html fill the entire viewport */
-        html, body {
-            height: 100%;
-            margin: 0;
-        }
-
-        /* Ensure the main section takes up the full height */
-        main {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Ensure the map container takes up the full screen */
-        #map {
-            height: 100%;
-            width: 100%;
-        }
-
-        /* Ensure header and footer don't mess with map layout */
-        header, footer {
-            z-index: 1;
-        }
+        /* Styles omitted for brevity */
     </style>
 </head>
 <body>
@@ -39,18 +17,16 @@
             <ul class="navbar">
                 <li><a href="{% url 'all_events' %}">Events</a></li>
                 <li><a href="{% url 'all_profiles' %}">Profiles</a></li>
-        
                 {% if user.is_authenticated %}
-                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                    <li><a href="#" id="logout">Logout</a></li>
                     <li><a href="{% url 'create_event' %}">Create Event</a></li>
-                    <li><a href="{% url 'event_map' %}">View Events on Map</a></li>  <!-- New link for the map -->
+                    <li><a href="{% url 'event_map' %}">View Events on Map</a></li>
                 {% else %}
-                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="#" id="login">Login</a></li>
                     <li><a href="{% url 'register' %}">Register</a></li>
                 {% endif %}
             </ul>
         </nav>
-        
     </header>
 
     <main>
@@ -61,6 +37,87 @@
     <footer>
         <p>&copy; 2024 Spark! Bytes. All rights reserved.</p>
     </footer>
+
+    <!-- Include Auth0 SPA SDK -->
+    
+    <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", async () => {
+        try {
+            // Initialize Auth0 Client
+            const auth0Client = await auth0.createAuth0Client({
+                domain: "dev-yp3u6zjlilfd2lql.us.auth0.com",
+                clientId: "hf5h8aJdhA8KRsVsolSBbCfCUQPFqDRP",
+                authorizationParams: {
+                    redirect_uri: "http://127.0.0.1:8000/",
+                },
+            });
+
+            console.log("Auth0 Client initialized");
+
+            // Handle the login button click
+            const loginButton = document.getElementById("login");
+            if (loginButton) {
+                loginButton.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    auth0Client.loginWithRedirect();
+                });
+            }
+
+            // Handle the logout button click
+            const logoutButton = document.getElementById("logout");
+            if (logoutButton) {
+                logoutButton.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    auth0Client.logout({
+                        returnTo: window.location.origin,
+                    });
+                });
+            }
+
+            // Handle redirect callback after login
+            if (
+                location.search.includes("state=") &&
+                (location.search.includes("code=") || location.search.includes("error="))
+            ) {
+                await auth0Client.handleRedirectCallback();
+                window.history.replaceState({}, document.title, "/");
+            }
+
+            // Check if the user is authenticated
+            const isAuthenticated = await auth0Client.isAuthenticated();
+
+            // Get user profile
+            const userProfile = isAuthenticated ? await auth0Client.getUser() : null;
+
+            // Display profile info if authenticated
+            const profileElement = document.getElementById("profile");
+            if (profileElement) {
+                if (isAuthenticated) {
+                    profileElement.style.display = "block";
+                    profileElement.innerHTML = `
+                        <p>Welcome, ${userProfile.name}</p>
+                        <img src="${userProfile.picture}" alt="User Profile" />
+                    `;
+                } else {
+                    profileElement.style.display = "none";
+                }
+            }
+        } catch (error) {
+            console.error("Error initializing Auth0 client:", error);
+        }
+    });
+</script>
+<nav>
+    <ul class="navbar">
+        <li><a href="{% url 'all_events' %}">Events</a></li>
+        <li><a href="{% url 'all_profiles' %}">Profiles</a></li>
+        <li><a href="#" id="login">Login</a></li>
+        <li><a href="#" id="logout" style="display:none;">Logout</a></li>
+    </ul>
+</nav>
+<div id="profile" style="display:none;"></div>
+
 </body>
 </html>
-

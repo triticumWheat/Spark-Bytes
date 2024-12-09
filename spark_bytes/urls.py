@@ -17,8 +17,19 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 from spark_bytes import settings
-from spark_bytes_app.views import EventDetailView, ProfileDetailView, EventListView, ProfileListView, CustomLoginView, \
-    CustomLogoutView, RegisterView, CreateEventView, ReserveSpotView, DeleteEventView, EventMapView
+from spark_bytes_app.views import (
+    EventDetailView, ProfileDetailView, EventListView, ProfileListView, 
+    CustomLoginView, CustomLogoutView, RegisterView, CreateEventView, 
+    ReserveSpotView, DeleteEventView, EventMapView, auth0_callback
+)
+
+  # Adjust imports as needed
+from django.urls import path
+from spark_bytes_app.views import auth0_callback, EventListView
+
+
+from django.urls import path
+from spark_bytes_app import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,9 +44,22 @@ urlpatterns = [
     path('create_event/', CreateEventView.as_view(), name='create_event'),
     path('events/<int:pk>/reserve/', ReserveSpotView.as_view(), name='reserve_spot'),
     path('event/<int:pk>/delete/', DeleteEventView.as_view, name='delete_event'),
-    path('events/map/', EventMapView.as_view(), name='event_map'), 
+    path('events/map/', EventMapView.as_view(), name='event_map'),
+    path('auth0/callback/', views.auth0_callback, name='auth0_callback'),
+    # Auth0-specific URLs
+    path('callback/', auth0_callback, name='auth0_callback'),
+    
 
+    path('', EventListView.as_view(), name='all_events'),  # Redirect to all_events by default
+    path('login/callback/', auth0_callback, name='auth0_callback'),  # Auth0 callback
+    path('login/', CustomLoginView.as_view(), name='login'),
+    path('logout/', CustomLogoutView.as_view(), name='logout'),
+    # Other URLs...
+
+
+   
+    
 ]
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    

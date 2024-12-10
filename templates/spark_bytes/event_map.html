@@ -3,88 +3,86 @@
 {% load custom_filters %}
 
 {% block content %}
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-        #map {
-            height: 500px; /* Ensure the map container has a defined height */
-            width: 100%;   /* Ensure it stretches across the container */
-            height: calc(100vh - 50px); /* Adjust for header height */
-            width: 100%;
-        }
-    </style>
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    #map {
+        height: 500px; /* Ensure the map container has a defined height */
+        width: 100%;   /* Ensure it stretches across the container */
+        height: calc(100vh - 50px); /* Adjust for header height */
+        width: 100%;
+    }
+</style>
 
-    <h1>Events Map</h1>
-    <div id="map"></div>
+<h1>Events Map</h1>
+<div id="map"></div>
 
-    <!-- Google Maps API -->
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQ0VHfBMPDBnibPeYrVuXyfMxLllHHqBY&callback=initMap&libraries=geometry"></script>
+<!-- Google Maps API -->
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQ0VHfBMPDBnibPeYrVuXyfMxLllHHqBY&callback=initMap&libraries=geometry"></script>
 
-    <script>
-        // Pass the events data from Django to JavaScript
-        var eventsData = JSON.parse('{{ events|jsonify|safe }}');
-        var userLocation = null; // To store user's location
-    
-        // Initialize and add the map
-        function initMap() {
-            var defaultLocation = {lat: 42.3505, lng: -71.1054};
-            var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 13,
-                center: defaultLocation
-            });
-    
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    var userLat = position.coords.latitude;
-                    var userLng = position.coords.longitude;
-                    userLocation = {lat: userLat, lng: userLng};
-                    map.setCenter(userLocation);
-                    var userMarker = new google.maps.Marker({
-                        position: userLocation,
-                        map: map,
-                        icon: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'
-                    });
-                }, function() {
-                    map.setCenter(defaultLocation);
-                });
-            } else {
-                map.setCenter(defaultLocation);
-            }
-    
-            eventsData.forEach(function(event) {
-                var eventLocation = {lat: event.latitude, lng: event.longitude};
-                var eventMarker = new google.maps.Marker({
-                    position: eventLocation,
+<script>
+    var eventsData = JSON.parse('{{ events_json|safe }}');
+    var userLocation = null;
+
+    function initMap() {
+        var defaultLocation = {lat: 42.3505, lng: -71.1054};
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 13,
+            center: defaultLocation
+        });
+
+        // Try to get the user's location
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                userLocation = {lat: position.coords.latitude, lng: position.coords.longitude};
+                map.setCenter(userLocation);
+                new google.maps.Marker({
+                    position: userLocation,
                     map: map,
-                    title: event.name
+                    icon: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+                    title: 'Your Location'
                 });
-    
-                eventMarker.addListener('click', function() {
-                    var distanceText = 'Unable to calculate distance';
-                    if (userLocation) {
-                        var distance = google.maps.geometry.spherical.computeDistanceBetween(
-                            new google.maps.LatLng(userLocation),
-                            new google.maps.LatLng(eventLocation)
-                        );
-                        distanceText = (distance / 1000).toFixed(2) + ' km away';
-                    }
-    
-                    var infoWindow = new google.maps.InfoWindow({
-                        content: '<div>' +
-                                 '<b>' + event.name + '</b><br>' +
-                                 event.location + '<br>' +
-                                 distanceText + '<br>' +
-                                 '<a href="/events/' + event.id + '/">View Event</a>' +  // Add a hyperlink for "View Event"
-                                 '</div>'
-                    });
-                    infoWindow.open(map, eventMarker);
-                });
+            }, function() {
+                console.log("Geolocation is not supported by this browser.");
             });
         }
-    </script>
-    
-{% endblock %}
 
+        // Setup markers and infowindows for each event
+        eventsData.forEach(function(event) {
+            var eventLocation = {lat: event.latitude, lng: event.longitude};
+            var eventMarker = new google.maps.Marker({
+                position: eventLocation,
+                map: map,
+                title: event.name
+            });
+
+            eventMarker.addListener('click', function() {
+                var distanceText = 'Unable to calculate distance';
+                if (userLocation) {
+                    var distance = google.maps.geometry.spherical.computeDistanceBetween(
+                        new google.maps.LatLng(userLocation),
+                        new google.maps.LatLng(eventLocation)
+                    );
+                    distanceText = (distance / 1000).toFixed(2) + ' km away';
+                }
+
+                var infoWindow = new google.maps.InfoWindow({
+                    content: '<div>' +
+                             '<img src="' + event.image_url + '" style="width:150px; height:auto;"><br>' +
+                             '<b>' + event.name + '</b><br>' +
+                             event.organization + '<br>' +
+                            //  'Location: ' + event.location + '<br>' +
+                             distanceText + '<br>' +
+                             '<a href="/events/' + event.id + '/">View Event</a>' +
+                             '</div>'
+                });
+                infoWindow.open(map, eventMarker);
+            });
+        });
+    }
+</script>
+
+{% endblock %}

@@ -46,21 +46,17 @@
         <h2>Created by:</h2>
         <a href="{% url 'profile_detail' profile.id %}">{{ profile.user.username }}</a>
 
-        <!-- Display new fields -->
         <h2>Food Information</h2>
         <p><strong>Food Items:</strong> {{ event.food_items }}</p>
-        <p><strong>Food Types:</strong> {{ event.food_types }}</p>
-        <p><strong>Allergies:</strong> {{ event.allergies }}</p>
+        <p><strong>Food Types:</strong> {{ event.get_food_types_display }}</p>
+        <p><strong>Allergies:</strong> {{ event.get_allergies_display }}</p>
 
-        <!-- Reservation Status Section -->
         <h2>Reservation Status:</h2>
         <p>
             Spots Reserved: <span id="reserved-count">{{ event.reserved_by.count }}</span> /
             <span id="reservation-limit">{{ event.reservation_limit }}</span>
         </p>
-        {% if event.is_full %}
-            <p style="color: red; font-weight: bold;">This event is full. No more spots available.</p>
-        {% else %}
+        {% if not event.is_full %}
             <div id="reserve-section">
                 {% if user.is_authenticated %}
                     {% if user.profile in event.reserved_by.all %}
@@ -79,15 +75,10 @@
                     <p><a href="{% url 'login' %}">Log in</a> to reserve a spot.</p>
                 {% endif %}
             </div>
+        {% else %}
+            <p style="color: red; font-weight: bold;">This event is full. No more spots available.</p>
         {% endif %}
 
-        <!-- Display QR Code if available -->
-        {% if qr_code %}
-            <h2>Your QR Code:</h2>
-            <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code">
-        {% endif %}
-
-        <!-- Display list of reserved profiles -->
         <h2>Reserved Spots</h2>
         {% if event.reserved_by.exists %}
             <ul>
@@ -116,28 +107,26 @@
         .then(response => response.json())
         .then(data => {
             alert(data.message);
-
-            // Update reservation status if successful
             if (data.message === 'Reservation successful!') {
-                const reservedCountElement = document.querySelector("#reserved-count");
-                const reservationLimitElement = document.querySelector("#reservation-limit");
-                const reserveSection = document.querySelector("#reserve-section");
+                const reservedCountElement = document.getElementById("reserved-count");
+                const reservationLimitElement = document.getElementById("reservation-limit");
 
-                let reservedCount = parseInt(reservedCountElement.textContent);
-                reservedCount += 1; // Increment the reserved count
+                // Increment the reserved count
+                let reservedCount = parseInt(reservedCountElement.textContent, 10) + 1;
                 reservedCountElement.textContent = reservedCount;
 
-                // Check if the event is now full
-                if (reservedCount >= parseInt(reservationLimitElement.textContent)) {
-                    reserveSection.innerHTML = `
-                        <p style="color: red; font-weight: bold;">This event is full. No more spots available.</p>
-                    `;
-                } else {
-                    reserveSection.innerHTML = `
+                // Display the QR code if provided
+                if (data.qr_code) {
+                    document.getElementById("reserve-section").innerHTML = `
                         <p>You have already reserved a spot for this event.</p>
                         <h2>Your QR Code:</h2>
                         <img src="data:image/png;base64,${data.qr_code}" alt="QR Code">
                     `;
+                }
+
+                // Check if the event is now full
+                if (reservedCount >= parseInt(reservationLimitElement.textContent, 10)) {
+                    document.getElementById("reserve-section").innerHTML += '<p style="color: red; font-weight: bold;">This event is full. No more spots available.</p>';
                 }
             }
         })
@@ -148,4 +137,3 @@
     });
 </script>
 {% endblock %}
-

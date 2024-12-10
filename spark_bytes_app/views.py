@@ -275,7 +275,7 @@ class ReserveSpotView(LoginRequiredMixin, DetailView):
         # Save and reload event to ensure consistency
         event.save()
         return JsonResponse({
-            'message': 'Reservation successful! The QR code below has been sent to your email address. Show this at the event to recieve your food!',
+            'message': 'Reservation successful!',
             'qr_code': qr_code_data
         }, status=200)
 
@@ -315,7 +315,6 @@ class ReserveSpotView(LoginRequiredMixin, DetailView):
         # Send the email
         email.send()
 
-
 class CustomLoginView(LoginView):
     template_name = 'spark_bytes/login.html'
     authentication_form = CustomAuthenticationForm
@@ -345,16 +344,29 @@ from django.shortcuts import render
 from django.views.generic import TemplateView
 from .models import Event
 
+from django.shortcuts import render
+from .models import Event
+import json
+
+from django.shortcuts import render
+from .models import Event
+import json
+
 class EventMapView(TemplateView):
     template_name = 'spark_bytes/event_map.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        events = Event.objects.all()  # Ensure that you get all the events
+        events = Event.objects.all()  # Ensure you retrieve all necessary event data
 
-        # Debugging: Print the events and their coordinates
-        for event in events:
-            print(f"Event: {event.name}, Latitude: {event.latitude}, Longitude: {event.longitude}")
+        events_data = [{
+            'id': event.id,
+            'name': event.name,
+            'organization': event.location,  # Use 'location' field as 'organization'
+            'latitude': event.latitude,
+            'longitude': event.longitude,
+            'image_url': event.image_url()
+        } for event in events]
 
-        context['events'] = events  # Pass the events to the template
+        context['events_json'] = json.dumps(events_data)  # Serialize the events data to JSON
         return context

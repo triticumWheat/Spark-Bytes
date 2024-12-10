@@ -18,6 +18,15 @@ class Profile(models.Model):
 from django.db import models
 
 class Event(models.Model):
+    # existing fields...
+    img = models.ImageField(upload_to='event_images/', blank=True, null=True)
+
+    def image_url(self):
+        if self.img and hasattr(self.img, 'url'):
+            return self.img.url
+        else:
+            # Return a default image if no image is uploaded
+            return settings.STATIC_URL + 'img/default-event.jpg'
     # Define choices for food types and allergies (same as your existing code)
     FOOD_TYPES = [
         ('Italian', 'Italian'),
@@ -58,7 +67,7 @@ class Event(models.Model):
 
     # The rest of your model...
 
-    img = models.ImageField(upload_to='event_images/')
+    #img = models.ImageField(upload_to='event_images/')
     location = models.CharField(max_length=255, default="Default Location")
 
     date = models.DateTimeField()

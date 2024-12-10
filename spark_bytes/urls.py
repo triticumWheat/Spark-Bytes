@@ -31,7 +31,18 @@ from spark_bytes_app.views import auth0_callback, EventListView
 from django.urls import path
 from spark_bytes_app import views
 
+
 urlpatterns = [
+
+
+
+    # In your Django urls.py
+    path('events/<int:pk>/', views.EventDetailView.as_view(), name='event_detail'),
+
+    # other URL patterns
+    #path('events/<int:pk>/', ReserveSpotView.as_view(), name='event_detail'),  # Use the primary key 'pk' instead of 'event_id'
+    # more URL patterns if needed
+
 
     path('admin/', admin.site.urls),
     path('', EventListView.as_view(), name='all_events'),

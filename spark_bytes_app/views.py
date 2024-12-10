@@ -275,7 +275,7 @@ class ReserveSpotView(LoginRequiredMixin, DetailView):
         # Save and reload event to ensure consistency
         event.save()
         return JsonResponse({
-            'message': 'Reservation successful!',
+            'message': 'Reservation successful! The QR code below has been sent to your email address. Show this at the event to recieve your food!',
             'qr_code': qr_code_data
         }, status=200)
 

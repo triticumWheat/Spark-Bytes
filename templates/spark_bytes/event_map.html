@@ -30,41 +30,30 @@
     
         // Initialize and add the map
         function initMap() {
-            // Default location: Boston
             var defaultLocation = {lat: 42.3505, lng: -71.1054};
-    
-            // Create a map object and specify the DOM element for display
             var map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 13,
                 center: defaultLocation
             });
     
-            // Add a marker for the user's location (if available)
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
                     var userLat = position.coords.latitude;
                     var userLng = position.coords.longitude;
                     userLocation = {lat: userLat, lng: userLng};
-    
-                    // Re-center the map to the user's location
                     map.setCenter(userLocation);
-    
-                    // Add a marker for the user's location
                     var userMarker = new google.maps.Marker({
                         position: userLocation,
                         map: map,
-                        icon: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'  // Custom icon for user
+                        icon: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'
                     });
                 }, function() {
-                    // If geolocation fails, show the default location
                     map.setCenter(defaultLocation);
                 });
             } else {
-                // If geolocation is not supported, show the default location
                 map.setCenter(defaultLocation);
             }
     
-            // Add markers for all events
             eventsData.forEach(function(event) {
                 var eventLocation = {lat: event.latitude, lng: event.longitude};
                 var eventMarker = new google.maps.Marker({
@@ -73,11 +62,8 @@
                     title: event.name
                 });
     
-                // Add a click event for each marker to show event details and distance in a popup
                 eventMarker.addListener('click', function() {
                     var distanceText = 'Unable to calculate distance';
-    
-                    // If user location is available, calculate the distance
                     if (userLocation) {
                         var distance = google.maps.geometry.spherical.computeDistanceBetween(
                             new google.maps.LatLng(userLocation),
@@ -86,11 +72,13 @@
                         distanceText = (distance / 1000).toFixed(2) + ' km away';
                     }
     
-                    // Create and open an info window with event details and distance
                     var infoWindow = new google.maps.InfoWindow({
-                        content: '<b>' + event.name + '</b><br>' +
+                        content: '<div>' +
+                                 '<b>' + event.name + '</b><br>' +
                                  event.location + '<br>' +
-                                 distanceText
+                                 distanceText + '<br>' +
+                                 '<a href="/events/' + event.id + '/">View Event</a>' +  // Add a hyperlink for "View Event"
+                                 '</div>'
                     });
                     infoWindow.open(map, eventMarker);
                 });
@@ -99,3 +87,4 @@
     </script>
     
 {% endblock %}
+

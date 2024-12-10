@@ -51,6 +51,11 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
+LOGIN_URL = '/login'
+LOGOUT_URL = '/logout'
+LOGIN_REDIRECT_URL = '/'
+
+
 ROOT_URLCONF = 'spark_bytes.urls'
 
 TEMPLATES = [
@@ -175,10 +180,11 @@ CSP_SCRIPT_SRC = [
 
 
 # settings.py
-AUTH0_DOMAIN = "dev-yp3u6zjlilfd2lql.us.auth0.com"
-AUTH0_CLIENT_ID = "hf5h8aJdhA8KRsVsolSBbCfCUQPFqDRP"
-AUTH0_CLIENT_SECRET = "OJtltkZpAyWTnX-8I9IqozTahjBjezsX2g0aPaC3JvgHwTG1aCNPQJXpZdUbvedZ"
-AUTH0_CALLBACK_URL = "http://127.0.0.1:8000"  # Replace with your actual callback URL
+AUTH0_DOMAIN = 'dev-yp3u6zjlilfd2lql.us.auth0.com'
+AUTH0_CLIENT_ID = 'hf5h8aJdhA8KRsVsolSBbCfCUQPFqDRP'
+AUTH0_CLIENT_SECRET = 'OJtltkZpAyWTnX-8I9IqozTahjBjezsX2g0aPaC3JvgHwTG1aCNPQJXpZdUbvedZ'
+AUTH0_CALLBACK_URL = 'http://127.0.0.1:8000/auth0/callback/'
+ # Replace with your actual callback URL
 AUTH0_API_IDENTIFIER = "https://your-api-identifier/"  # Optional if you're calling an API
 AUTH0_JWKS_URI = f"https://{AUTH0_DOMAIN}/.well-known/jwks.json"
 
@@ -197,3 +203,4 @@ INSTALLED_APPS = [
     'spark_bytes_app',  # Your app
     'spark_bytes',
 ]
+

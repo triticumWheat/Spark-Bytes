@@ -42,73 +42,80 @@
     
     <script src="https://cdn.auth0.com/js/auth0-spa-js/2.0/auth0-spa-js.production.js"></script>
 
-<script>
-    document.addEventListener("DOMContentLoaded", async () => {
-        try {
-            // Initialize Auth0 Client
-            const auth0Client = await auth0.createAuth0Client({
-                domain: "dev-yp3u6zjlilfd2lql.us.auth0.com",
-                clientId: "hf5h8aJdhA8KRsVsolSBbCfCUQPFqDRP",
-                authorizationParams: {
-                    redirect_uri: "http://127.0.0.1:8000/login",
-                },
-            });
-
-            console.log("Auth0 Client initialized");
-
-            // Handle the login button click
-            const loginButton = document.getElementById("login");
-            if (loginButton) {
-                loginButton.addEventListener("click", (e) => {
-                    e.preventDefault();
-                    auth0Client.loginWithRedirect();
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            let auth0Client;
+    
+            try {
+                // Initialize Auth0 Client
+                auth0Client = await auth0.createAuth0Client({
+                    domain: "dev-yp3u6zjlilfd2lql.us.auth0.com",
+                    clientId: "hf5h8aJdhA8KRsVsolSBbCfCUQPFqDRP",
+                    cacheLocation: 'localstorage',
+                    useRefreshTokens: true,
+                    authorizationParams: {
+                        // Correct redirect_uri after login
+                        redirect_uri: "http://127.0.0.1:8000/auth0/callback/",
+                        response_type: 'code',
+                        scope: 'openid profile email'
+                    }
                 });
-            }
-
-            // Handle the logout button click
-            const logoutButton = document.getElementById("logout");
-            if (logoutButton) {
-                logoutButton.addEventListener("click", (e) => {
+    
+                console.log("Auth0 Client initialized");
+    
+                // Handle the login button click
+                const loginButton = document.getElementById("login");
+                loginButton.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    auth0Client.loginWithRedirect().catch(function(err) {
+                        console.error("Login failed: ", err);
+                        alert("Login failed, please check the console for more information.");
+                    });
+                });
+    
+                // Handle the logout button click
+                const logoutButton = document.getElementById("logout");
+                logoutButton.addEventListener("click", function(e) {
                     e.preventDefault();
                     auth0Client.logout({
                         returnTo: "http://127.0.0.1:8000/logout",
                     });
                 });
-            }
-
-            // Handle redirect callback after login
-            if (
-                location.search.includes("state=") &&
-                (location.search.includes("code=") || location.search.includes("error="))
-            ) {
-                await auth0Client.handleRedirectCallback();
-                window.history.replaceState({}, document.title, "/");
-            }
-
-            // Check if the user is authenticated
-            const isAuthenticated = await auth0Client.isAuthenticated();
-
-            // Get user profile
-            const userProfile = isAuthenticated ? await auth0Client.getUser() : null;
-
-            // Display profile info if authenticated
-            const profileElement = document.getElementById("profile");
-            if (profileElement) {
+    
+                // Handle redirect callback from Auth0 login
+                if (location.search.includes("code=") && location.search.includes("state=")) {
+                    try {
+                        await auth0Client.handleRedirectCallback();
+                        console.log("Redirect Callback handled successfully.");
+                        window.history.replaceState({}, document.title, "/");
+                    } catch (err) {
+                        console.error("Error handling redirect:", err);
+                    }
+                }
+    
+                // Check if the user is authenticated
+                const isAuthenticated = await auth0Client.isAuthenticated();
+                console.log("User authenticated: ", isAuthenticated);
+    
+                // Get user profile and update UI
                 if (isAuthenticated) {
+                    const userProfile = await auth0Client.getUser();
+                    console.log("User profile retrieved: ", userProfile);
+                    
+                    const profileElement = document.getElementById("profile");
                     profileElement.style.display = "block";
                     profileElement.innerHTML = `
                         <p>Welcome, ${userProfile.name}</p>
                         <img src="${userProfile.picture}" alt="User Profile" />
                     `;
-                } else {
-                    profileElement.style.display = "none";
                 }
+            } catch (error) {
+                console.error("Error initializing or handling Auth0 client:", error);
+                alert("Authentication error: " + error);
             }
-        } catch (error) {
-            console.error("Error initializing Auth0 client:", error);
-        }
-    });
-</script>
+        });
+    </script>
+    
 <nav>
     <ul class="navbar">
         <li><a href="{% url 'all_events' %}">Events</a></li>

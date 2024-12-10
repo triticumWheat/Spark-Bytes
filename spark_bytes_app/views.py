@@ -33,7 +33,7 @@ def base_view(request):
     return render(request, "base.html", {
         "auth0_domain": settings.AUTH0_DOMAIN,
         "auth0_client_id": settings.AUTH0_CLIENT_ID,
-        "logout_url": "http://localhost:8000",  # Replace with your logout URL
+        "logout_url": "http://localhost:8000/logout",  # Replace with your logout URL
     })
 
 # Add this function near your login/logout views
@@ -53,7 +53,7 @@ def auth0_callback(request):
         'client_id': settings.AUTH0_CLIENT_ID,
         'client_secret': settings.AUTH0_CLIENT_SECRET,
         'code': code,
-        'redirect_uri': "http://localhost:8000/login/callback/",  # Update as per your callback URL
+        'redirect_uri': "http://localhost:8000/login",  # Update as per your callback URL
     }
     token_response = requests.post(token_url, json=token_payload)
     tokens = token_response.json()

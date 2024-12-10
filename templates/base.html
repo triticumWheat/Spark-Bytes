@@ -15,15 +15,21 @@
         <h1>Spark! Bytes</h1>
         <nav>
             <ul class="navbar">
-                <li><a href="{% url 'all_events' %}">Events</a></li>
-                <li><a href="{% url 'all_profiles' %}">Profiles</a></li>
-                {% if user.is_authenticated %}
-                    <li><a href="#" id="logout">Logout</a></li>
-                    <li><a href="{% url 'create_event' %}">Create Event</a></li>
-                    <li><a href="{% url 'event_map' %}">View Events on Map</a></li>
-                {% else %}
-                    <li><a href="#" id="login">Login</a></li>
+                <!-- <li><a href="{% url 'all_events' %}">Events</a></li>
+                <li><a href="{% url 'all_profiles' %}">Profiles</a></li> -->
+                {% if request.resolver_match.url_name == "login" %}
                     <li><a href="{% url 'register' %}">Register</a></li>
+                {% else %}
+                    {% if user.is_authenticated %}
+                        <li><a href="#" id="logout">Logout</a></li>
+                        <li><a href="{% url 'create_event' %}">Create Event</a></li>
+                        <li><a href="{% url 'event_map' %}">View Events on Map</a></li>
+                        <li><a href="{% url 'all_events' %}">Events</a></li>
+                        <li><a href="{% url 'all_profiles' %}">Profiles</a></li>
+                    {% else %}
+                        <li><a href="#" id="login">Login</a></li>
+                        <li><a href="{% url 'register' %}">Register</a></li>
+                    {% endif %}
                 {% endif %}
             </ul>
         </nav>
@@ -54,7 +60,7 @@
                     cacheLocation: 'localstorage',
                     useRefreshTokens: true,
                     authorizationParams: {
-                        // Correct redirect_uri after login
+                        // Ensure the redirect_uri is correctly set for handling the callback
                         redirect_uri: "http://127.0.0.1:8000/auth0/callback/",
                         response_type: 'code',
                         scope: 'openid profile email'
@@ -63,24 +69,28 @@
     
                 console.log("Auth0 Client initialized");
     
-                // Handle the login button click
+                // Handle the login button click if the login button exists
                 const loginButton = document.getElementById("login");
-                loginButton.addEventListener("click", function(e) {
-                    e.preventDefault();
-                    auth0Client.loginWithRedirect().catch(function(err) {
-                        console.error("Login failed: ", err);
-                        alert("Login failed, please check the console for more information.");
+                if (loginButton) {
+                    loginButton.addEventListener("click", function(e) {
+                        e.preventDefault();
+                        auth0Client.loginWithRedirect().catch(function(err) {
+                            console.error("Login failed: ", err);
+                            alert("Login failed, please check the console for more information.");
+                        });
                     });
-                });
+                }
     
-                // Handle the logout button click
+                // Handle the logout button click if the logout button exists
                 const logoutButton = document.getElementById("logout");
-                logoutButton.addEventListener("click", function(e) {
-                    e.preventDefault();
-                    auth0Client.logout({
-                        returnTo: "http://127.0.0.1:8000/logout",
+                if (logoutButton) {
+                    logoutButton.addEventListener("click", function(e) {
+                        e.preventDefault();
+                        auth0Client.logout({
+                            returnTo: "http://127.0.0.1:8000/logout",
+                        });
                     });
-                });
+                }
     
                 // Handle redirect callback from Auth0 login
                 if (location.search.includes("code=") && location.search.includes("state=")) {
@@ -97,17 +107,19 @@
                 const isAuthenticated = await auth0Client.isAuthenticated();
                 console.log("User authenticated: ", isAuthenticated);
     
-                // Get user profile and update UI
+                // Get user profile and update UI if the user is authenticated
                 if (isAuthenticated) {
                     const userProfile = await auth0Client.getUser();
                     console.log("User profile retrieved: ", userProfile);
                     
                     const profileElement = document.getElementById("profile");
-                    profileElement.style.display = "block";
-                    profileElement.innerHTML = `
-                        <p>Welcome, ${userProfile.name}</p>
-                        <img src="${userProfile.picture}" alt="User Profile" />
-                    `;
+                    if (profileElement) {
+                        profileElement.style.display = "block";
+                        profileElement.innerHTML = `
+                            <p>Welcome, ${userProfile.name}</p>
+                            <img src="${userProfile.picture}" alt="User Profile" />
+                        `;
+                    }
                 }
             } catch (error) {
                 console.error("Error initializing or handling Auth0 client:", error);
@@ -116,7 +128,8 @@
         });
     </script>
     
-<nav>
+    
+<!-- <nav>
     <ul class="navbar">
         <li><a href="{% url 'all_events' %}">Events</a></li>
         <li><a href="{% url 'all_profiles' %}">Profiles</a></li>
@@ -124,7 +137,7 @@
         <li><a href="#" id="logout" style="display:none;">Logout</a></li>
     </ul>
 </nav>
-<div id="profile" style="display:none;"></div>
+<div id="profile" style="display:none;"></div> -->
 
 </body>
 </html>

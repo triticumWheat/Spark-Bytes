@@ -5,4 +5,4 @@ Pillow
 plotly
 pandas
 qrcode
-environ
+django-environ

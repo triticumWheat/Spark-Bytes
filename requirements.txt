@@ -6,4 +6,4 @@ plotly
 pandas
 qrcode
 django-environ
-jose
+python-jose

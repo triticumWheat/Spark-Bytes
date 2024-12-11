@@ -15,9 +15,9 @@
         <h1>Spark! Bytes</h1>
         <nav>
             <ul class="navbar">
-                <!-- <li><a href="{% url 'all_events' %}">Events</a></li>
-                <li><a href="{% url 'all_profiles' %}">Profiles</a></li> -->
-                {% if request.resolver_match.url_name == "login" %}
+                {% if request.resolver_match.url_name == "register" %}
+                    <li><a href="{% url 'login' %}">Go Back to Login</a></li>
+                {% elif request.resolver_match.url_name == "login" %}
                     <li><a href="{% url 'register' %}">Register</a></li>
                 {% else %}
                     {% if user.is_authenticated %}
@@ -27,11 +27,13 @@
                         <li><a href="{% url 'all_events' %}">Events</a></li>
                         <li><a href="{% url 'all_profiles' %}">Profiles</a></li>
                     {% else %}
+                        <!-- Ensure this URL redirects through Auth0 if that's your setup -->
                         <li><a href="#" id="login">Login</a></li>
                         <li><a href="{% url 'register' %}">Register</a></li>
                     {% endif %}
                 {% endif %}
             </ul>
+            
         </nav>
     </header>
 

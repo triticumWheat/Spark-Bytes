@@ -12,7 +12,7 @@ from .models import User
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={'class': 'form-control'}))
-    buid = forms.CharField(label="BUID", max_length=8, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    buid = forms.CharField(label="8-Digit BUID (only numbers) ", max_length=8, widget=forms.TextInput(attrs={'class': 'form-control'}))
     img = forms.ImageField(label="Profile Picture", required=True)
 
     class Meta:

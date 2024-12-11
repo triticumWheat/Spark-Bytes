@@ -1,12 +1,25 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Login</h1>
-<section>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Login</button>
-    </form>
-</section>
+<div class="login-container" style="max-width: 600px; margin: auto; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    <h1 style="text-align: center;">Login</h1>
+    <p style="font-size: 25px; font-weight: bold; margin-bottom: 10px; text-align: center;">
+        Thank you for dual authenticating via one of our linked social platforms. Now please sign in separately to your Spark Bytes account!
+        Or <a href="{% url 'register' %}" style="color: #007BFF; text-decoration: none;">register</a> if you don't already have one.
+    </p>
+    <section style="width: 100%; padding: 20px; background-color: #f9f9f9; border-radius: 8px;">
+        <form method="post" style="margin-bottom: 10px;">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" style="width: 100%; padding: 15px 20px; font-size: 24px; background-color: #D32F2F; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                Login
+            </button>
+        </form>
+        <a href="{% url 'register' %}">
+            <button type="button" style="width: 100%; padding: 15px 20px; font-size: 18px; background-color: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                Register
+            </button>
+        </a>
+    </section>
+</div>
 {% endblock %}

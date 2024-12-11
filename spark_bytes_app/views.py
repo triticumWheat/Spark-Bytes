@@ -187,7 +187,7 @@ class RegisterView(FormView):
         login(self.request, user)
 
         # Redirect to the 'all_events' page after successful registration
-        return redirect('all_events')
+        return redirect('login')
 
     def form_invalid(self, form):
         # This method will be triggered if the form is invalid
@@ -370,3 +370,11 @@ class EventMapView(TemplateView):
 
         context['events_json'] = json.dumps(events_data)  # Serialize the events data to JSON
         return context
+
+from django.shortcuts import render
+
+from django.shortcuts import render
+
+def registration_success(request):
+    # Correct the path to match the location within the spark_bytes directory
+    return render(request, 'spark_bytes/registration_success.html')

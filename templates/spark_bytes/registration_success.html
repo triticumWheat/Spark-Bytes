@@ -1,0 +1,15 @@
+
+
+{% block content %}
+<div class="success-container">
+    <h1>Registration Successful!</h1>
+    <p>Thank you for registering. You've successfully created an account! Now please <a href="{% url 'login' %}">login</a> with the credentials you've just created.</p>
+</div>
+
+<style>
+    .success-container {
+        text-align: center;
+        margin-top: 50px;
+    }
+</style>
+{% endblock %}

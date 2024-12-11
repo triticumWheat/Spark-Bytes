@@ -20,7 +20,7 @@ from spark_bytes import settings
 from spark_bytes_app.views import (
     EventDetailView, ProfileDetailView, EventListView, ProfileListView, 
     CustomLoginView, CustomLogoutView, RegisterView, CreateEventView, 
-    ReserveSpotView, DeleteEventView, EventMapView, auth0_callback
+    ReserveSpotView, DeleteEventView, EventMapView, auth0_callback, registration_success
 )
 
   # Adjust imports as needed
@@ -38,8 +38,11 @@ urlpatterns = [
 
     # In your Django urls.py
     path('events/<int:pk>/', views.EventDetailView.as_view(), name='event_detail'),
+    # Ensure this view exists
 
-    
+
+    path('registration_success/', registration_success, name='registration_success'),
+
 
 
     path('admin/', admin.site.urls),

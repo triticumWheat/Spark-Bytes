@@ -55,7 +55,11 @@
                 <strong>Created by:</strong>
                 <a href="{% url 'profile_detail' event.created_by.id %}">{{ event.created_by.user.username }}</a>
             </p>
-            <p><a href="{% url 'event_detail' event.id %}">View Event</a></p>
+            <p>
+                <a href="{% url 'event_detail' event.id %}" style="display: inline-block; background-color: #007bff; color: white; padding: 8px 12px; text-align: center; border-radius: 5px; text-decoration: none;">
+                    View Event
+                </a>
+            </p>
         </li>
         {% empty %}
         <p>No events match your search criteria.</p>

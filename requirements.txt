@@ -7,3 +7,4 @@ pandas
 qrcode
 django-environ
 python-jose
+requests

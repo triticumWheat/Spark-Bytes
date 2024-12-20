@@ -33,7 +33,7 @@ def base_view(request):
     return render(request, "base.html", {
         "auth0_domain": settings.AUTH0_DOMAIN,
         "auth0_client_id": settings.AUTH0_CLIENT_ID,
-        "logout_url": "http://localhost:8000/logout",  # Replace with your logout URL
+        "logout_url": "https://sparkbytes-cbcb12916fe3.herokuapp.com/logout",  # Replace with your logout URL
     })
 
 # Add this function near your login/logout views

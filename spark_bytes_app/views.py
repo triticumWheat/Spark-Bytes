@@ -53,7 +53,7 @@ def auth0_callback(request):
         'client_id': settings.AUTH0_CLIENT_ID,
         'client_secret': settings.AUTH0_CLIENT_SECRET,
         'code': code,
-        'redirect_uri': "http://localhost:8000/login",  # Update as per your callback URL
+        'redirect_uri': "https://sparkbytes-cbcb12916fe3.herokuapp.com/login",  # Update as per your callback URL
     }
     token_response = requests.post(token_url, json=token_payload)
     tokens = token_response.json()

@@ -63,7 +63,7 @@
                     useRefreshTokens: true,
                     authorizationParams: {
                         // Ensure the redirect_uri is correctly set for handling the callback
-                        redirect_uri: "http://127.0.0.1:8000/auth0/callback/",
+                        redirect_uri: "https://sparkbytes-cbcb12916fe3.herokuapp.com/auth0/callback/",
                         response_type: 'code',
                         scope: 'openid profile email'
                     }
@@ -89,7 +89,7 @@
                     logoutButton.addEventListener("click", function(e) {
                         e.preventDefault();
                         auth0Client.logout({
-                            returnTo: "http://127.0.0.1:8000/logout",
+                            returnTo: "https://sparkbytes-cbcb12916fe3.herokuapp.com/logout",
                         });
                     });
                 }
